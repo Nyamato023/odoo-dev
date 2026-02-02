@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Extend POS configuration form view for Odoo 17 -->
+    <record id="view_pos_config_form_inherit" model="ir.ui.view">
+        <field name="name">pos.config.form.inherit.shop.logo</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="pos.view_pos_config_form"/>
+        <field name="arch" type="xml">
+            <!-- Add shop_logo field after company_id field -->
+            <xpath expr="//field[@name='company_id']" position="after">
+                <group string="Receipt Logo">
+                    <field name="shop_logo"
+                           widget="image"
+                           class="oe_avatar"
+                           options="{'preview_image': 'shop_logo', 'size': [200, 100]}"/>
+                    <div class="oe_grey" style="margin-top: 8px; font-size: 12px;">
+                        Custom logo for receipts from this POS
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

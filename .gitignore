@@ -1,0 +1,36 @@
+# Create .gitignore in your main folder
+cat > .gitignore << 'EOF'
+# Ignore ALL .git directories in subfolders
+**/.git/
+**/.gitignore
+
+# But keep YOUR .gitignore (add exception)
+!.gitignore
+
+# Ignore common files you don't want to track
+*.pyc
+__pycache__/
+*.log
+*.pot
+*.po
+*.mo
+.DS_Store
+.idea/
+.vscode/
+.env
+.env.local
+*.sqlite3
+*.backup
+
+# Odoo specific
+*.egg-info/
+dist/
+build/
+.coverage
+.tox/
+
+# Optional: Ignore downloaded dependencies
+.venv/
+node_modules/
+EOF
+
