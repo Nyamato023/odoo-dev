@@ -21,6 +21,7 @@ __pycache__/
 .env.local
 *.sqlite3
 *.backup
+*.conf
 
 # Odoo specific
 *.egg-info/
@@ -33,4 +34,3 @@ build/
 .venv/
 node_modules/
 EOF
-
