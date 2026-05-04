@@ -1,5 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_timetable_task_user,timetable.task user,model_timetable_task,group_timetable_user,1,1,1,0
-access_timetable_task_manager,timetable.task manager,model_timetable_task,group_timetable_manager,1,1,1,1
-access_timetable_subtask_user,timetable.subtask user,model_timetable_subtask,group_timetable_user,1,1,1,0
-access_timetable_subtask_manager,timetable.subtask manager,model_timetable_subtask,group_timetable_manager,1,1,1,1
