@@ -10,25 +10,8 @@ cat > .gitignore << 'EOF'
 # Ignore common files you don't want to track
 *.pyc
 __pycache__/
-*.log
-*.pot
-*.po
-*.mo
-.DS_Store
-.idea/
-.vscode/
-.env
-.env.local
-*.sqlite3
-*.backup
-# *.conf
 
-# Odoo specific
-*.egg-info/
-dist/
-build/
-.coverage
-.tox/
+# *.conf
 
 # Optional: Ignore downloaded dependencies
 .venv/
