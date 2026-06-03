@@ -24,21 +24,7 @@ odoo-dev/
 └── 19.conf
 ```
 
-## Directory Description
 
-| Directory/File     | Description                   |
-| ------------------ | ----------------------------- |
-| `odoo-17/`         | Odoo 17 Community source code |
-| `enterprise-17.0/` | Odoo 17 Enterprise addons     |
-| `odoo-18/`         | Odoo 18 Community source code |
-| `enterprise-18.0/` | Odoo 18 Enterprise addons     |
-| `odoo-19/`         | Odoo 19 Community source code |
-| `enterprise-19.0/` | Odoo 19 Enterprise addons     |
-| `17.conf`          | Odoo 17 configuration         |
-| `18.conf`          | Odoo 18 configuration         |
-| `19.conf`          | Odoo 19 configuration         |
-
----
 
 # Prerequisites
 
@@ -59,158 +45,83 @@ psql --version
 node --version
 git --version
 ```
+
+---
+
 # System Dependencies
-
-
 
 Before installing Odoo, install the required system packages.
 
-
-
 ## Ubuntu / Debian
-
-
 
 Update your system:
 
-
-
 ```bash
-
 sudo apt update
-
 sudo apt upgrade -y
-
 ```
-
-
 
 Install common dependencies:
 
-
-
 ```bash
-
 sudo apt install -y \
-
     git \
-
     python3 \
-
     python3-venv \
-
     python3-pip \
-
     build-essential \
-
     libpq-dev \
-
     postgresql \
-
     postgresql-contrib \
-
     nodejs \
-
     npm \
-
     xfonts-75dpi \
-
     xfonts-base
-
 ```
 
-
-
 ---
-
-
 
 # Install wkhtmltopdf (Patched Version)
 
-
-
 Odoo PDF reports require the patched Qt version of wkhtmltopdf.
-
-
 
 Verify your Ubuntu version:
 
-
-
 ```bash
-
 lsb_release -a
-
 ```
-
-
 
 Download the appropriate package from the wkhtmltopdf packaging releases:
 
-
-
 ```bash
-
 wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.jammy_amd64.deb
-
 ```
-
-
 
 Install:
 
-
-
 ```bash
-
 sudo apt install ./wkhtmltox_0.12.6.1-3.jammy_amd64.deb
-
 ```
-
-
 
 Verify installation:
 
-
-
 ```bash
-
 wkhtmltopdf --version
-
 ```
-
-
 
 Expected output:
 
-
-
 ```text
-
 wkhtmltopdf 0.12.6.1 (with patched qt)
-
 ```
-
-
 
 **Important:** The output must include:
 
-
-
 ```text
-
 (with patched qt)
-
 ```
 
-
-
 If it does not, PDF generation may fail or produce incorrect reports.
-
-
-
----
-
 
 ---
 
@@ -290,53 +201,7 @@ pip list
 
 You should see the required Odoo dependencies installed successfully.
 
----
-
-# Activating the Environment
-# Installing Odoo
-
-Each version should have its own Python virtual environment.
-
-## Odoo 17
-
-```bash
-cd odoo-17
-
-python3 -m venv .venv
-source .venv/bin/activate
-
-pip install --upgrade pip wheel setuptools
-
-pip install -r requirements.txt
-```
-
-## Odoo 18
-
-```bash
-cd odoo-18
-
-python3 -m venv .venv
-source .venv/bin/activate
-
-pip install --upgrade pip wheel setuptools
-
-pip install -r requirements.txt
-```
-
-## Odoo 19
-
-```bash
-cd odoo-19
-
-python3 -m venv .venv
-source .venv/bin/activate
-
-pip install --upgrade pip wheel setuptools
-
-pip install -r requirements.txt
-```
-
----
+## Activating the Environment
 
 Whenever you start working on the project:
 
@@ -347,59 +212,26 @@ source .venv/bin/activate
 
 ---
 
-# Running Odoo
-
-## Odoo 17
-
-```bash
-cd odoo-17
-
-python odoo-bin -c ../17.conf
-```
-
-## Odoo 18
-
-```bash
-cd odoo-18
-
-python odoo-bin -c ../18.conf
-```
-
-## Odoo 19
-
-```bash
-cd odoo-19
-
-python odoo-bin -c ../19.conf
-```
-
-The same virtual environment is used for all versions.
-
 # Enterprise Setup
 
 Enterprise repositories require a valid Odoo Enterprise subscription.
 
 Clone Enterprise inside the corresponding version directory.
 
-Example:
+Example for Odoo 18:
 
 ```bash
 cd odoo-18
 
 git clone git@github.com:odoo/enterprise.git enterprise-18.0
-```
 
-Checkout the matching branch:
-
-```bash
 cd enterprise-18.0
 git checkout 18.0
 ```
 
-Repeat for other versions.
+Repeat for Odoo 17 and Odoo 19 using the matching branch names.
 
 ---
-
 
 # Configuration
 
@@ -437,57 +269,36 @@ as required by your environment.
 
 # Running Odoo
 
-## Odoo 17
+### Odoo 17
 
 ```bash
 cd odoo-17
-
-source .venv/bin/activate
-
 python odoo-bin -c ../17.conf
 ```
 
-Access:
-
-```text
-http://localhost:8069
-```
-
----
-
-## Odoo 18
+### Odoo 18
 
 ```bash
 cd odoo-18
-
-source .venv/bin/activate
-
 python odoo-bin -c ../18.conf
 ```
 
-Access:
-
-```text
-http://localhost:8070
-```
-
----
-
-## Odoo 19
+### Odoo 19
 
 ```bash
 cd odoo-19
-
-source .venv/bin/activate
-
 python odoo-bin -c ../19.conf
 ```
 
-Access:
+## Access URLs
 
-```text
-http://localhost:8071
-```
+| Version | URL                   |
+| ------- | --------------------- |
+| Odoo 17 | http://localhost:8069 |
+| Odoo 18 | http://localhost:8070 |
+| Odoo 19 | http://localhost:8071 |
+
+The same virtual environment is used for all versions.
 
 ---
 
@@ -519,33 +330,14 @@ python odoo-bin -c ../18.conf -u my_module
 
 ---
 
-
-
 # Common Commands
 
-Update a module:
-
-```bash
-python odoo-bin -c ../18.conf -u module_name
-```
-
-Install a module:
-
-```bash
-python odoo-bin -c ../18.conf -i module_name
-```
-
-Run with a specific database:
-
-```bash
-python odoo-bin -c ../18.conf -d database_name
-```
-
-Enable developer mode from CLI:
-
-```bash
-python odoo-bin --dev=all -c ../18.conf
-```
+| Action                     | Command                                          |
+| -------------------------- | ------------------------------------------------ |
+| Update module              | `python odoo-bin -c ../18.conf -u module_name`   |
+| Install module             | `python odoo-bin -c ../18.conf -i module_name`   |
+| Run with specific database | `python odoo-bin -c ../18.conf -d database_name` |
+| Enable developer mode      | `python odoo-bin --dev=all -c ../18.conf`        |
 
 ---
 
@@ -565,8 +357,6 @@ Verify login:
 psql -U odoo -h localhost
 ```
 
----
-
 ## Missing Python Package
 
 Reinstall requirements:
@@ -575,8 +365,6 @@ Reinstall requirements:
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
-
----
 
 ## Port Already In Use
 
@@ -592,8 +380,6 @@ Terminate it:
 kill -9 <PID>
 ```
 
----
-
 ## Module Not Found
 
 Check:
@@ -608,7 +394,7 @@ Check:
 # Development Recommendations
 
 * Use a separate database per Odoo version.
-* Use a dedicated virtual environment per version.
+* Use the shared repository virtual environment.
 * Keep Enterprise and Community branches aligned.
 * Never develop directly on the version branch; create feature branches.
 
@@ -623,7 +409,7 @@ git checkout -b feature/customer-statement-report
 # License
 
 * Odoo Community Edition is licensed under LGPL-3.
-* Odoo Enterprise Edition requires a valid commercial license from Odoo S.A. 
+* Odoo Enterprise Edition requires a valid commercial license from Odoo S.A.
 
 ---
 
