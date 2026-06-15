@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_hospital_weekly_checklist" model="ir.sequence">
+            <field name="name">Weekly Checklist Sequence</field>
+            <field name="code">hospital.weekly.checklist</field>
+            <field name="prefix">WCH-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="seq_hospital_daily_checklist" model="ir.sequence">
+            <field name="name">Daily Checklist Sequence</field>
+            <field name="code">hospital.daily.checklist</field>
+            <field name="prefix">DCH-</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

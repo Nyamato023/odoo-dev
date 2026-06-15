@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_hospital_daily_checklist_tree" model="ir.ui.view">
+        <field name="name">hospital.daily.checklist.tree</field>
+        <field name="model">hospital.daily.checklist</field>
+        <field name="arch" type="xml">
+            <tree string="Daily Checklists">
+                <field name="name"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_hospital_daily_checklist_form" model="ir.ui.view">
+        <field name="name">hospital.daily.checklist.form</field>
+        <field name="model">hospital.daily.checklist</field>
+        <field name="arch" type="xml">
+            <form string="Daily Checklist">
+                <header>
+                    <button name="action_print_report" string="Print PDF Report" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="date"/>
+                    </group>
+                    <div class="mb-3"/>
+                    <notebook>
+                        <page string="Hospitals Contacted" name="outreach">
+                            <field name="line_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="hospital_id"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Doctor Profiles Update" name="doctors">
+                            <field name="doctor_notes" placeholder="Details on leaves, resignations, or new arrivals..."/>
+                        </page>
+                        <page string="Updates &amp; Promos" name="updates">
+                            <field name="update_notes" placeholder="List of new discounts or hospital announcements..."/>
+                        </page>
+                        <page string="Complaints" name="complaints">
+                            <field name="complaint_notes" placeholder="Grievances reported by hospitals about Baano..."/>
+                        </page>
+                        <page string="Challenges" name="challenges">
+                            <field name="challenge_notes" placeholder="Operational roadblocks in hospital collaboration..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_hospital_daily_checklist" model="ir.actions.act_window">
+        <field name="name">Daily Checklists</field>
+        <field name="res_model">hospital.daily.checklist</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first daily checklist
+            </p>
+        </field>
+    </record>
+</odoo>

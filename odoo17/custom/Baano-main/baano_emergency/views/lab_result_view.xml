@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lab Result Sequence -->
+    <record id="seq_lab_result" model="ir.sequence">
+        <field name="name">Lab Result Sequence</field>
+        <field name="code">laboratory.lab_result</field>
+        <field name="prefix">RES/</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+    </record>
+
+    <record id="view_lab_result_tree" model="ir.ui.view">
+        <field name="name">lab.result.tree</field>
+        <field name="model">laboratory.lab_result</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="patient_id" />
+                <field name="status" widget="badge" decoration-warning="status == 'in_progress'"
+                    decoration-success="status == 'done'"
+                    decoration-muted="status == 'draft'" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_lab_result_form" model="ir.ui.view">
+        <field name="name">lab.result.form</field>
+        <field name="model">laboratory.lab_result</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Result" />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <!-- <field name="name" /> -->
+                            <field name="request_id" />
+                            <field name="patient_id" />
+
+                        </group>
+
+                        <group>
+                            <field name="date" />
+                            <field name="status" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lab Test Sequence -->
+    <record id="seq_lab_test" model="ir.sequence">
+        <field name="name">Lab Test Sequence</field>
+        <field name="code">laboratory.lab_test</field>
+        <field name="prefix">TST/</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+    </record>
+
+    <record id="view_lab_test_tree" model="ir.ui.view">
+        <field name="name">lab.test.tree</field>
+        <field name="model">laboratory.lab_test</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="sample_type" />
+                <field name="result_value" readonly="1" />
+                <field name="category" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_lab_test_form" model="ir.ui.view">
+        <field name="name">lab.test.form</field>
+        <field name="model">laboratory.lab_test</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Test" />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="diagnosis" />
+                            <field name="normal_range" />
+                            <field name="result_value" />
+                        </group>
+                        <group>
+                            <!-- <field name="name" /> -->
+                            <field name="sample_type" />
+                            <field name="result_type" />
+                            <field name="category" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Additional Information">
+                            <group>
+                                <field name="description" />
+                                <field name="other_info" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

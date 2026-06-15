@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Actions for Configuration Lists -->
+    <record id="action_baano_hospital" model="ir.actions.act_window">
+        <field name="name">Hospitals</field>
+        <field name="res_model">baano.hospital</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_baano_doctor" model="ir.actions.act_window">
+        <field name="name">Dr List</field>
+        <field name="res_model">baano.doctor</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_baano_complain" model="ir.actions.act_window">
+        <field name="name">Complains</field>
+        <field name="res_model">baano.complain</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_baano_enterprise" model="ir.actions.act_window">
+        <field name="name">Enterprise</field>
+        <field name="res_model">baano.enterprise</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_baano_site" model="ir.actions.act_window">
+        <field name="name">Site</field>
+        <field name="res_model">baano.site</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_baano_location" model="ir.actions.act_window">
+        <field name="name">Locations / State</field>
+        <field name="res_model">baano.location_state</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menu Structure under Configuration -->
+    <menuitem id="menu_basic_lists"
+              name="Basic Lists"
+              parent="crm.crm_menu_config"
+              sequence="1"/>
+
+    <menuitem id="menu_baano_location"
+              name="Locations / State"
+              parent="menu_basic_lists"
+              action="action_baano_location"
+              sequence="10"/>
+
+    <menuitem id="menu_baano_hospital"
+              name="Hospitals"
+              parent="menu_basic_lists"
+              action="action_baano_hospital"
+              sequence="20"/>
+
+    <menuitem id="menu_baano_doctor"
+              name="Dr List"
+              parent="menu_basic_lists"
+              action="action_baano_doctor"
+              sequence="30"/>
+
+    <menuitem id="menu_baano_complain"
+              name="Complains"
+              parent="menu_basic_lists"
+              action="action_baano_complain"
+              sequence="40"/>
+
+    <menuitem id="menu_baano_enterprise"
+              name="Enterprise"
+              parent="menu_basic_lists"
+              action="action_baano_enterprise"
+              sequence="50"/>
+
+    <menuitem id="menu_baano_site"
+              name="Site"
+              parent="menu_basic_lists"
+              action="action_baano_site"
+              sequence="60"/>
+</odoo>

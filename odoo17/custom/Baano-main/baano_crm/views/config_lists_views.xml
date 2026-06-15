@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Location State Views -->
+    <record id="view_baano_location_state_tree" model="ir.ui.view">
+        <field name="name">baano.location_state.tree</field>
+        <field name="model">baano.location_state</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_baano_location_state_form" model="ir.ui.view">
+        <field name="name">baano.location_state.form</field>
+        <field name="model">baano.location_state</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Location"/>
+                        <h1><field name="name" placeholder="e.g. Downtown"/></h1>
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Hospital Views -->
+    <record id="view_baano_hospital_tree" model="ir.ui.view">
+        <field name="name">baano.hospital.tree</field>
+        <field name="model">baano.hospital</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_baano_hospital_form" model="ir.ui.view">
+        <field name="name">baano.hospital.form</field>
+        <field name="model">baano.hospital</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Name..."/></h1>
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Doctor Views -->
+    <record id="view_baano_doctor_tree" model="ir.ui.view">
+        <field name="name">baano.doctor.tree</field>
+        <field name="model">baano.doctor</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_baano_doctor_form" model="ir.ui.view">
+        <field name="name">baano.doctor.form</field>
+        <field name="model">baano.doctor</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Doctor Name"/>
+                        <h1><field name="name" placeholder="Name..."/></h1>
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Complain Views -->
+    <record id="view_baano_complain_tree" model="ir.ui.view">
+        <field name="name">baano.complain.tree</field>
+        <field name="model">baano.complain</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Chief Complaint"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_baano_complain_form" model="ir.ui.view">
+        <field name="name">baano.complain.form</field>
+        <field name="model">baano.complain</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Chief Complaints"/>
+                        <h1><field name="name" placeholder="Describe the complaint..."/></h1>
+                    </div>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Enterprise Views -->
+    <record id="view_baano_enterprise_tree" model="ir.ui.view">
+        <field name="name">baano.enterprise.tree</field>
+        <field name="model">baano.enterprise</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="site_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_baano_enterprise_form" model="ir.ui.view">
+        <field name="name">baano.enterprise.form</field>
+        <field name="model">baano.enterprise</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Name..."/></h1>
+                    </div>
+                    <group>
+                        <field name="site_id" options="{'no_create': True, 'no_open': False}" class="w-100"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Site Views -->
+    <record id="view_baano_site_tree" model="ir.ui.view">
+        <field name="name">baano.site.tree</field>
+        <field name="model">baano.site</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_baano_site_form" model="ir.ui.view">
+        <field name="name">baano.site.form</field>
+        <field name="model">baano.site</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Name..."/></h1>
+                    </div>
+                    <group>
+                        <field name="company_id" options="{'no_create': True}" class="w-100"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+</odoo>

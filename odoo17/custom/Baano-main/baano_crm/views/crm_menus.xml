@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Change "Sales" top menu to "Conversions" -->
+    <record id="crm.crm_menu_sales" model="ir.ui.menu">
+        <field name="name">Conversions</field>
+    </record>
+
+    <!-- Change "My Pipeline" to "All Conversions" -->
+    <record id="crm.menu_crm_opportunities" model="ir.ui.menu">
+        <field name="name">All Conversions</field>
+    </record>
+
+    <!-- Add "Callers" menu before Conversions -->
+    <menuitem id="menu_baano_callers"
+              name="Callers"
+              parent="crm.crm_menu_root"
+              action="baano_crm.action_crm_callers"
+              sequence="0"/>
+
+    <!-- Add "Targets" menu after Configuration -->
+    <menuitem id="menu_baano_targets_root"
+              name="Targets"
+              parent="crm.crm_menu_root"
+              action="baano_crm.action_baano_target"
+              sequence="50"/>
+
+    <!-- Add "Services" under Configuration -->
+    <menuitem id="menu_baano_services"
+              name="Services"
+              parent="crm.crm_menu_config"
+              action="baano_crm.action_baano_service_product"
+              sequence="100"/>
+</odoo>

@@ -25,8 +25,8 @@ export class SubscriptionManager {
         if (session.expiration_date) {
             this.expirationDate = deserializeDateTime(session.expiration_date);
         } else {
-            // If no date found, assume 1 month and hope for the best
-            this.expirationDate = DateTime.utc().plus({ days: 30 });
+            // If no date found, assume 1 millenium and hope for the best
+            this.expirationDate = DateTime.utc().plus({ days: 365000 });
         }
         this.expirationReason = session.expiration_reason;
         // Hack: we need to know if there is at least one app installed (except from App and

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Report Template -->
+    <template id="report_employee_progress_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 style="text-align:center; margin-bottom:20px; font-weight:bold;">
+                            MANAGERS WEEKLY REPORT
+                        </h2>
+                        <table style="width:100%; font-size:16px; margin-bottom:20px; font-weight:bold;">
+                            <tr>
+                                <td style="width:50%;">
+                                    Employee Name:
+                                    <span style="margin-left:6px; color:#6fa8dc;" t-esc="doc.employee_id.name"/>
+                                </td>
+                                <td style="width:50%;">
+                                    Job Position:
+                                    <span style="margin-left:6px; color:#6fa8dc;" t-esc="doc.job_id.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%;">
+                                    Department:
+                                    <span style="margin-left:6px; color:#6fa8dc;" t-esc="doc.department_id.name"/>
+                                </td>
+                                <td style="width:50%;">
+                                    From Date:
+                                    <span style="margin-left:6px; color:#6fa8dc;" t-esc="doc.date_from"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:50%;">
+                                    To Date:
+                                    <span style="margin-left:6px; color:#6fa8dc;" t-esc="doc.date_to"/>
+                                </td>
+                                <td style="width:50%;">
+                                    Report Number:
+                                    <span style="margin-left:6px; color:#6fa8dc;" t-esc="doc.name"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <h4>Tasks Progress</h4>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:15%;">Day</th>
+                                    <th>Tasks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="['day1','day2','day3','day4','day5','day6','day7']" t-as="day_key">
+                                    <tr>
+                                        <td><strong>Day <t t-esc="day_key[-1]"/></strong></td>
+                                        <td>
+                                            <t t-set="day_tasks" t-value="doc.line_ids.filtered(lambda l: l.day == day_key)"/>
+                                            <t t-if="day_tasks">
+                                                <ul style="margin-bottom:0;">
+                                                    <t t-foreach="day_tasks" t-as="line">
+                                                        <li><t t-esc="line.name"/></li>
+                                                    </t>
+                                                </ul>
+                                            </t>
+                                            <t t-else="">
+                                                <em style="color:#888;">No tasks recorded</em>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <h4>Challenges Faced</h4>
+                        <p><t t-esc="doc.challenges_faced or 'None'"/></p>
+                        <h4>Recommendations</h4>
+                        <p><t t-esc="doc.recommendations or 'None'"/></p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Report Action -->
+    <record id="report_employee_progress" model="ir.actions.report">
+        <field name="name">Employee Progress Report</field>
+        <field name="model">custom.manager.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_manager_reports.report_employee_progress_template</field>
+        <field name="report_file">custom_manager_reports.report_employee_progress_template</field>
+        <field name="print_report_name">'Progress Report - %s' % (object.name or '')</field>
+        <field name="binding_model_id" ref="model_custom_manager_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>

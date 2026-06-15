@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_daily_checklist" model="ir.actions.report">
+        <field name="name">Daily Checklist</field>
+        <field name="model">hospital.daily.checklist</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hospital_coordination.report_daily_checklist_template</field>
+        <field name="report_file">hospital_coordination.report_daily_checklist_template</field>
+        <field name="print_report_name">'Daily Checklist - %s' % (object.date)</field>
+        <field name="binding_model_id" ref="model_hospital_daily_checklist"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

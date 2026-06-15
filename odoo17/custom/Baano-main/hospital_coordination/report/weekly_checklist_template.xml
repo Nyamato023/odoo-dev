@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_weekly_checklist_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                            .checklist-table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-top: 25px;
+                                table-layout: fixed;
+                            }
+                            .checklist-table tr {
+                                min-height: 120px;
+                            }
+                            .checklist-table thead tr {
+                                min-height: 40px;
+                            }
+                            .checklist-table th, .checklist-table td {
+                                border: 1px solid black;
+                                padding: 12px 15px;
+                                vertical-align: middle;
+                                font-size: 16px;
+                                word-wrap: break-word;
+                            }
+                            .checklist-table th {
+                                background-color: #f2f2f2;
+                                text-align: center;
+                                font-weight: bold;
+                                font-size: 16px;
+                            }
+                            .task-column { width: 33%; }
+                            .notes-column { width: 57%; }
+                            .check-column { width: 10%; text-align: center; font-size: 22px; }
+
+                            .notes-cell {
+                                min-height: 130px;
+                            }
+                            .line-row {
+                                border-bottom: 1px solid #bbb;
+                                height: 26px;
+                                display: block;
+                                width: 100%;
+                            }
+
+                            .header-container {
+                                padding-bottom: 15px;
+                            }
+                            .report-title {
+                                text-transform: uppercase;
+                                font-weight: bold;
+                                font-size: 24px;
+                                text-align: center;
+                                margin: 0;
+                            }
+                            .ref-label {
+                                font-size: 21px;
+                                font-weight: bold;
+                                text-align: right;
+                                margin-bottom: 4px;
+                            }
+                            .date-label {
+                                font-size: 17px;
+                                text-align: right;
+                                color: #666;
+                            }
+                        </style>
+
+                        <!-- Header: Weekly Title and Range -->
+                        <div class="header-container">
+                            <div class="row">
+                                <div class="col-7 d-flex align-items-center">
+                                    <h2 class="report-title">WEEKLY COORDINATION CHECKLIST</h2>
+                                </div>
+                                <div class="col-5">
+                                    <div class="ref-label">
+                                        <span t-field="o.name"/>
+                                    </div>
+                                    <div class="date-label">
+                                        <span t-field="o.from_date"/> to <span t-field="o.to_date"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="checklist-table">
+                            <thead>
+                                <tr>
+                                    <th class="check-column"><i class="fa fa-check"/></th>
+                                    <th class="task-column">Task Description</th>
+                                    <th class="notes-column">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- 1. Booking Performance -->
+                                <tr>
+                                    <td class="check-column">
+                                        <t t-if="o.booking_performance">
+                                            <i class="fa fa-check-square-o"/>
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-square-o"/>
+                                        </t>
+                                    </td>
+                                    <td><strong>Analyze hospital booking performance (high vs low)</strong></td>
+                                    <td class="notes-cell">
+                                        <t t-if="o.booking_performance">
+                                            <span t-field="o.booking_performance"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="line-row"/>
+                                            <span class="line-row"/>
+                                            <span class="line-row"/>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!-- 2. Complaints and Collaboration -->
+                                <tr>
+                                    <td class="check-column">
+                                        <t t-if="o.feedback_problems">
+                                            <i class="fa fa-check-square-o"/>
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-square-o"/>
+                                        </t>
+                                    </td>
+                                    <td><strong>Summarize complaints and collaboration issues</strong></td>
+                                    <td class="notes-cell">
+                                        <t t-if="o.feedback_problems">
+                                            <span t-field="o.feedback_problems"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="line-row"/>
+                                            <span class="line-row"/>
+                                            <span class="line-row"/>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!-- 3. Active Promotions -->
+                                <tr>
+                                    <td class="check-column">
+                                        <t t-if="o.promotions_campaigns">
+                                            <i class="fa fa-check-square-o"/>
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-square-o"/>
+                                        </t>
+                                    </td>
+                                    <td><strong>Report active promotions and campaigns</strong></td>
+                                    <td class="notes-cell">
+                                        <t t-if="o.promotions_campaigns">
+                                            <span t-field="o.promotions_campaigns"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="line-row"/>
+                                            <span class="line-row"/>
+                                            <span class="line-row"/>
+                                        </t>
+                                    </td>
+                                </tr>
+
+                                <!-- 4. Weekly Report / Insights -->
+                                <tr>
+                                    <td class="check-column">
+                                        <t t-if="o.insights_recommendations">
+                                            <i class="fa fa-check-square-o"/>
+                                        </t>
+                                        <t t-else="">
+                                            <i class="fa fa-square-o"/>
+                                        </t>
+                                    </td>
+                                    <td><strong>Submit weekly report with insights and recommendations</strong></td>
+                                    <td class="notes-cell">
+                                        <t t-if="o.insights_recommendations">
+                                            <span t-field="o.insights_recommendations"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="line-row"/>
+                                            <span class="line-row"/>
+                                            <span class="line-row"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hospital_daily_checklist,hospital.daily.checklist,model_hospital_daily_checklist,base.group_user,1,1,1,1
+access_hospital_daily_checklist_line,hospital.daily.checklist.line,model_hospital_daily_checklist_line,base.group_user,1,1,1,1
+access_hospital_weekly_checklist,hospital.weekly.checklist,model_hospital_weekly_checklist,base.group_user,1,1,1,1
+access_hospital_customer_satisfaction,hospital.customer.satisfaction,model_hospital_customer_satisfaction,base.group_user,1,1,1,1

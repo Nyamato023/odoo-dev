@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Actions -->
+    <!-- Patient Action (Kanban view only) -->
+    <record id="action_patient_emergency" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">baano.patient</field>
+        <field name="view_mode">kanban</field>
+    </record>
+
+    <!-- Patient Action (Tree, Kanban, Form views) -->
+    <record id="action_patient" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">baano.patient</field>
+        <field name="view_mode">tree,kanban,form</field>
+    </record>
+
+    <!-- Appointment Action -->
+    <record id="action_appointment" model="ir.actions.act_window">
+        <field name="name">Appointments</field>
+        <field name="res_model">baano.appointment</field>
+        <field name="view_mode">tree,kanban,form</field>
+    </record>
+
+    <!-- Prescription Action -->
+    <record id="action_baano_prescription" model="ir.actions.act_window">
+        <field name="name">Prescriptions</field>
+        <field name="res_model">baano.prescription</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new prescription.
+            </p>
+        </field>
+    </record>
+
+
+    <!-- Dashboard Action -->
+    <record id="action_baano_dashboard" model="ir.actions.client">
+        <field name="name">Baano Dashboard</field>
+        <field name="tag">baano_dashboard_action</field>
+    </record>
+
+    <!-- Menu Items -->
+    <!-- Root Menu -->
+    <menuitem
+        id="menu_baano_root"
+        name="Emergency Center"
+        action="action_patient_emergency"
+        sequence="2"
+        web_icon="baano_emergency,static/img/baano_center.png"
+        groups="group_baano_user"
+    />
+
+    <!-- Reports (Dashboard) -->
+    <menuitem
+        id="menu_baano_reports"
+        name="Reports"
+        action="action_baano_dashboard"
+        sequence="20"
+        web_icon="baano_emergency,static/img/report.png"
+        groups="group_baano_user"
+    />
+
+    <!-- Patients -->
+    <menuitem
+        id="menu_baano_patient"
+        name="Patients"
+        action="action_patient"
+        sequence="1"
+        web_icon="baano_emergency,static/img/patient.png"
+        groups="group_baano_user"
+    />
+
+    <!-- Consultation (Appointments) -->
+    <menuitem
+        id="menu_baano_appointment"
+        name="Consultation"
+        parent="menu_baano_root"
+        action="action_appointment"
+        sequence="2"
+        groups="group_baano_user"
+    />
+
+    <!-- Prescriptions -->
+    <menuitem
+        id="menu_baano_prescription"
+        name="Prescriptions"
+        parent="menu_baano_root"
+        action="action_baano_prescription"
+        sequence="5"
+        groups="group_baano_user"
+    />
+    <record id="action_lab_request" model="ir.actions.act_window">
+        <field name="name">Lab Requests</field>
+        <field name="res_model">laboratory.lab_request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_lab_test" model="ir.actions.act_window">
+        <field name="name">Lab Tests</field>
+        <field name="res_model">laboratory.lab_test</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_lab_sample" model="ir.actions.act_window">
+        <field name="name">Lab Samples</field>
+        <field name="res_model">laboratory.lab_sample</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_lab_result" model="ir.actions.act_window">
+        <field name="name">Lab Results</field>
+        <field name="res_model">laboratory.lab_result</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <!-- <menuitem id="menu_laboratory" name="Laboratory" web_icon="baano_emergency,static/img/flask.png" /> -->
+
+    <!-- <menuitem id="menu_lab_request" name="Lab Requests" parent="menu_laboratory"
+        action="action_lab_request" />
+    <menuitem id="menu_lab_test" name="Lab Tests" parent="menu_laboratory" action="action_lab_test" />
+    <menuitem id="menu_lab_sample" name="Lab Samples" parent="menu_laboratory"
+        action="action_lab_sample" />
+    <menuitem id="menu_lab_result" name="Lab Results" parent="menu_laboratory"
+        action="action_lab_result" /> -->
+
+        <!-- ===================== -->
+    <!--   CONFIGURATION MENU   -->
+    <!-- ===================== -->
+    
+    <!-- Parent Configuration Menu -->
+    <menuitem
+        id="menu_baano_configuration"
+        name="Configuration"
+        parent="menu_baano_root"
+        sequence="50"
+        groups="group_baano_user"
+    />
+    
+    <!-- ======== Sites ======== -->
+    
+    <!-- Action for Sites -->
+    <record id="action_baano_sites" model="ir.actions.act_window">
+        <field name="name">Sites</field>
+        <field name="res_model">baano.site</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    
+    <!-- Menuitem for Sites -->
+    <menuitem
+        id="menu_baano_sites"
+        name="Sites"
+        parent="menu_baano_configuration"
+        action="action_baano_sites"
+        sequence="1"
+        groups="group_baano_user"
+    />
+    
+    <!-- ======== Doctors ======== -->
+    
+    <!-- Action for Doctors -->
+    <!-- <record id="action_baano_doctors" model="ir.actions.act_window">
+        <field name="name">Doctors</field>
+        <field name="res_model">baano.doctor</field>
+        <field name="view_mode">tree,form</field>
+    </record> -->
+    
+    <!-- Menuitem for Doctors -->
+    <!-- <menuitem
+        id="menu_baano_doctors"
+        name="Doctors"
+        parent="menu_baano_configuration"
+        action="action_baano_doctors"
+        sequence="2"
+        groups="group_baano_user"
+    /> -->
+
+
+
+</odoo>

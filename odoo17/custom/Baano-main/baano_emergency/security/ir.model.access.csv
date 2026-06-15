@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_baano_patient,baano.patient access,model_baano_patient,group_baano_user,1,1,1,1
+access_baano_appointment,baano.appointment access,model_baano_appointment,group_baano_user,1,1,1,1
+
+access_baano_department_user,access.baano.department.user,model_baano_department,baano_emergency.group_baano_user,1,1,1,1
+access_baano_evaluation_user,baano.evaluation user,model_baano_evaluation,base.group_user,1,1,1,1
+access_acs_pain_level_user,access_acs_pain_level_user,model_acs_pain_level,base.group_user,1,1,1,1
+access_baano_diseases_user,baano.diseases.user,model_baano_diseases,base.group_user,1,1,1,1
+access_baano_prescription_user,baano.prescription user,model_baano_prescription,base.group_user,1,1,1,1
+access_baano_prescription_line,baano.prescription.line,model_baano_prescription_line,,1,1,1,1
+access_baano_medicine_user,access.baano.medicine.user,model_baano_medicine,group_baano_user,1,1,1,1
+access_baano_report_wizard,access_baano_report_wizard,model_baano_report_wizard,,1,1,1,1
+access_lab_request,access.lab.request,model_laboratory_lab_request,,1,1,1,1
+access_lab_test,access.lab.test,model_laboratory_lab_test,,1,1,1,1
+access_lab_sample,access.lab.sample,model_laboratory_lab_sample,,1,1,1,1
+access_lab_result,access.lab.result,model_laboratory_lab_result,,1,1,1,1
+access_baano_site,baano.site access,model_baano_site,group_baano_user,1,1,1,1

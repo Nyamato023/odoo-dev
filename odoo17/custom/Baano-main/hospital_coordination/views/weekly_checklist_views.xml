@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_hospital_weekly_checklist_tree" model="ir.ui.view">
+        <field name="name">hospital.weekly.checklist.tree</field>
+        <field name="model">hospital.weekly.checklist</field>
+        <field name="arch" type="xml">
+            <tree string="Weekly Checklists">
+                <field name="name"/>
+                <field name="from_date"/>
+                <field name="to_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_hospital_weekly_checklist_form" model="ir.ui.view">
+        <field name="name">hospital.weekly.checklist.form</field>
+        <field name="model">hospital.weekly.checklist</field>
+        <field name="arch" type="xml">
+            <form string="Weekly Checklist">
+                <header>
+                    <button name="action_print_report" string="Print PDF Report" type="object" class="oe_highlight"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="from_date"/>
+                            <field name="to_date"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Booking Performance" name="performance">
+                            <field name="booking_performance" placeholder="Analysis of High vs Low booking hospitals..."/>
+                        </page>
+                        <page string="Complaints &amp; Collaboration" name="feedback">
+                            <field name="feedback_problems" placeholder="Summary of complaints and collaboration issues..."/>
+                        </page>
+                        <page string="Promotions &amp; Campaigns" name="promotions">
+                            <field name="promotions_campaigns" placeholder="Consolidated list of active promotions..."/>
+                        </page>
+                        <page string="Insights &amp; Recommendations" name="insights">
+                            <field name="insights_recommendations" placeholder="Strategic insights for Management..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_hospital_weekly_checklist" model="ir.actions.act_window">
+        <field name="name">Weekly Checklists</field>
+        <field name="res_model">hospital.weekly.checklist</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first weekly checklist
+            </p>
+        </field>
+    </record>
+</odoo>

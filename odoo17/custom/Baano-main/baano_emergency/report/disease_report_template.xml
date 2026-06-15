@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Registering the report template with external ID -->
+        <template id="disease_types_report">
+            <t t-name="baano_emergency.disease_types_report">
+                <t t-call="web.external_layout">
+                    <main class="page">
+                        <h1 class="text-center text-danger mb-4">Total Disease Types</h1>
+
+                        <!-- Get all appointments -->
+                        <t t-set="all_cases" t-value="docs" />
+
+                        <!-- Summary Section -->
+                        <div class="mb-4">
+                            <div class="card">
+                                <div class="card-body bg-light">
+                                    <h3 class="card-title mb-3 text-center">Summary</h3>
+                                    <div class="row mb-2">
+                                        <!-- Total, Male, Female -->
+                                        <div class="col-4">
+                                            <p>
+                                                <strong>Total Cases:</strong>
+                                                <span t-esc="len(all_cases)" />
+                                            </p>
+                                            <p class="ms-3 mb-1"> Male: <span t-esc="len([c for c in all_cases if c.patient_id.gender == 'male'])" />
+                                            </p>
+                                            <p class="ms-3"> Female: <span t-esc="len([c for c in all_cases if c.patient_id.gender == 'female'])" />
+                                            </p>
+                                        </div>
+
+                                        <!-- Company Info -->
+                                        <!-- <div class="col-4">
+                                            <p>
+                                                <strong>Company:</strong>
+                                                <t t-if="all_cases and all_cases[0].patient_id.company">
+                                                    <span t-field="all_cases[0].patient_id.company" />
+                                                </t>
+                                                <t t-else="">N/A</t>
+                                            </p>
+                                        </div> -->
+
+                                        <!-- Doctor Info -->
+                                        <div class="col-4">
+                                            <p>
+                                                <strong>Doctor:</strong>
+                                                <t t-if="all_cases and all_cases[0].doctor_id">
+                                                    <span t-field="all_cases[0].doctor_id" />
+                                                </t>
+                                                <t t-else="">N/A</t>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cases Table -->
+                        <div>
+                            <h3 class="text-center">Cases List</h3>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Appointment Date</th>
+                                        <th>Company ID</th>
+                                        <th>Gender</th>
+                                        <th>Doctor</th>
+                                        <th>SiteID</th>
+                                        <th>Diagnosis</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="all_cases" t-as="case">
+                                        <tr>
+                                            <td>
+                                                <span t-field="case.appointment_date" />
+                                            </td>
+                                            <td>
+                                                <span t-field="case.patient_id.company_id_number" />
+                                            </td>
+                                            <td>
+                                                <span t-field="case.patient_id.gender" t-options="{'widget': 'selection'}" />
+                                            </td>
+                                            <!-- <td>
+                                                <t t-if="case.patient_id.company">
+                                                    <span t-field="case.patient_id.company" />
+                                                </t>
+                                                <t t-else="">N/A</t>
+                                            </td> -->
+                                            <td>
+                                                <t t-if="case.doctor_id">
+                                                    <span t-field="case.doctor_id" />
+                                                </t>
+                                                <t t-else="">N/A</t>
+                                            </td>
+
+                                            <td>
+                                                <t t-if="case.patient_id.site_id">
+                                                    <span t-field="case.patient_id.site_id" />
+                                                </t>
+                                                <t t-else="">N/A</t>
+                                            </td>
+
+                                            <td>
+                                                <t t-if="case.diagnosis_id">
+                                                    <span t-field="case.diagnosis_id" />
+                                                </t>
+                                                <t t-else="">N/A</t>
+                                            </td>
+
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </main>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_baano_location_state,baano.location_state,model_baano_location_state,base.group_user,1,1,1,1
+access_baano_hospital,baano.hospital,model_baano_hospital,base.group_user,1,1,1,1
+access_baano_doctor,baano.doctor,model_baano_doctor,base.group_user,1,1,1,1
+access_baano_complain,baano.complain,model_baano_complain,base.group_user,1,1,1,1
+access_baano_enterprise,baano.enterprise,model_baano_enterprise,base.group_user,1,1,1,1
+access_baano_site,baano.site,model_baano_site,base.group_user,1,1,1,1
+access_baano_target,baano.target,model_baano_target,base.group_user,1,1,1,1
+access_baano_target_line,baano.target.line,model_baano_target_line,base.group_user,1,1,1,1

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_custom_manager_report_tree" model="ir.ui.view">
+        <field name="name">custom.manager.report.tree</field>
+        <field name="model">custom.manager.report</field>
+        <field name="arch" type="xml">
+            <tree string="Custom Reports">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="job_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_custom_manager_report_form" model="ir.ui.view">
+        <field name="name">custom.manager.report.form</field>
+        <field name="model">custom.manager.report</field>
+        <field name="arch" type="xml">
+            <form string="Custom Report">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="first,second,third" options="{'clickable': '1'}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="job_id" readonly="1" force_save="1"/>
+                            <field name="department_id" readonly="1" force_save="1"/>
+                        </group>
+                        <group>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Weekly Report" name="weekly_report">
+                            <div class="row mt-4">
+                                <div class="col-6 pe-5">
+                                    <separator string="DAY 1"/>
+                                    <field name="day1_line_ids" nolabel="1" context="{'default_day': 'day1'}">
+                                        <tree editable="bottom">
+                                            <field name="day" column_invisible="1"/>
+                                            <field name="name" string="Tasks"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                                <div class="col-6 ps-3">
+                                    <separator string="DAY 2"/>
+                                    <field name="day2_line_ids" nolabel="1" context="{'default_day': 'day2'}">
+                                        <tree editable="bottom">
+                                            <field name="day" column_invisible="1"/>
+                                            <field name="name" string="Tasks"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <separator string="DAY 3"/>
+                                    <field name="day3_line_ids" nolabel="1" context="{'default_day': 'day3'}">
+                                        <tree editable="bottom">
+                                            <field name="day" column_invisible="1"/>
+                                            <field name="name" string="Tasks"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                                <div class="col-6">
+                                    <separator string="DAY 4"/>
+                                    <field name="day4_line_ids" nolabel="1" context="{'default_day': 'day4'}">
+                                        <tree editable="bottom">
+                                            <field name="day" column_invisible="1"/>
+                                            <field name="name" string="Tasks"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <separator string="DAY 5"/>
+                                    <field name="day5_line_ids" nolabel="1" context="{'default_day': 'day5'}">
+                                        <tree editable="bottom">
+                                            <field name="day" column_invisible="1"/>
+                                            <field name="name" string="Tasks"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                                <div class="col-6">
+                                    <separator string="DAY 6"/>
+                                    <field name="day6_line_ids" nolabel="1" context="{'default_day': 'day6'}">
+                                        <tree editable="bottom">
+                                            <field name="day" column_invisible="1"/>
+                                            <field name="name" string="Tasks"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <separator string="DAY 7"/>
+                                    <field name="day7_line_ids" nolabel="1" context="{'default_day': 'day7'}">
+                                        <tree editable="bottom">
+                                            <field name="day" column_invisible="1"/>
+                                            <field name="name" string="Tasks"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Challenges" name="challenges">
+                            <group>
+                                <field name="challenges_faced" placeholder="Challenges Faced..."/>
+                            </group>
+                        </page>
+                        <page string="Recommendations" name="recommendations">
+                            <group>
+                                <field name="recommendations" placeholder="Recommendations..."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_custom_manager_report" model="ir.actions.act_window">
+        <field name="name">Manager Reports</field>
+        <field name="res_model">custom.manager.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new custom report
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_custom_report_root" name="Manager Reports" web_icon="custom_manager_reports,static/description/icon.png" sequence="10"/>
+    <menuitem id="menu_custom_report_main" name="Reports" parent="menu_custom_report_root" action="action_custom_manager_report" sequence="10"/>
+
+    <!-- Sequence for Report Name -->
+    <record id="seq_custom_manager_report" model="ir.sequence">
+        <field name="name">Custom Manager Report Sequence</field>
+        <field name="code">custom.manager.report</field>
+        <field name="prefix">RPT/%(year)s/</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False"/>
+    </record>
+</odoo>
+

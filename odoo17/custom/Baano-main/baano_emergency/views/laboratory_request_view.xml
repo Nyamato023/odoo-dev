@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_lab_request" model="ir.sequence">
+        <field name="name">Lab Request Sequence</field>
+        <field name="code">laboratory.lab_request</field>
+        <field name="prefix">REQ/</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+    </record>
+    <record id="view_lab_request_tree" model="ir.ui.view">
+        <field name="name">lab.request.tree</field>
+        <field name="model">laboratory.lab_request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="patient_id" />
+                <field name="date" />
+                <field name="state" widget="badge" decoration-warning="state == 'in_progress'"
+                    decoration-success="state == 'done'"
+                    decoration-muted="state == 'draft'" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_lab_request_form" model="ir.ui.view">
+        <field name="name">lab.request.form</field>
+        <field name="model">laboratory.lab_request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" />
+                    <button name="action_confirm" string="Confirm" type="object"
+                        invisible="state != 'draft'" class="oe_highlight" />
+                    <button name="action_done" string="Mark as Done" type="object"
+                        invisible="state != 'in_progress'" class="oe_highlight" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Request" />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+
+                    <group>
+                        <field name="appointment_id" readonly="1" />
+                        <field name="patient_id" />
+                        <field name="age" />
+                        <field name="date" />
+                        <field name="doctor_id" />
+                    </group>
+
+
+                    <notebook>
+                        <page string="Tests">
+                            <group>
+                                <!-- First Row -->
+                                <group>
+                                    <group string="Blood Tests" colspan="2">
+                                        <field name="test_ids" widget="many2many_checkboxes"
+                                            domain="[('category', '=', 'blood_tests')]" nolabel="1" />
+                                    </group>
+                                    <group string="Organ Function Tests" colspan="2">
+                                        <field name="test_ids" widget="many2many_checkboxes"
+                                            domain="[('category', '=', 'organ_function')]"
+                                            nolabel="1" />
+                                    </group>
+                                    <group string="Urine Tests" colspan="2">
+                                        <field name="test_ids" widget="many2many_checkboxes"
+                                            domain="[('category', '=', 'urine_tests')]" nolabel="1" />
+                                    </group>
+                                </group>
+                                <!-- Second Row -->
+                                <group>
+                                    <group string="Infection Screening" colspan="2">
+                                        <field name="test_ids" widget="many2many_checkboxes"
+                                            domain="[('category', '=', 'infection_tests')]"
+                                            nolabel="1" />
+                                    </group>
+                                    <group string="Hormone Tests" colspan="2">
+                                        <field name="test_ids" widget="many2many_checkboxes"
+                                            domain="[('category', '=', 'hormone_tests')]"
+                                            nolabel="1" />
+                                    </group>
+                                    <group string="Immune System Tests" colspan="2">
+                                        <field name="test_ids" widget="many2many_checkboxes"
+                                            domain="[('category', '=', 'immune_tests')]" nolabel="1" />
+                                    </group>
+                                </group>
+                                <!-- Third Row -->
+                                <group>
+                                    <group string="Stool Tests" colspan="2">
+                                        <field name="test_ids" widget="many2many_checkboxes"
+                                            domain="[('category', '=', 'stool_tests')]" nolabel="1" />
+                                    </group>
+                                    <group string="Drug and Toxin Tests" colspan="2">
+                                        <field name="test_ids" widget="many2many_checkboxes"
+                                            domain="[('category', '=', 'drug_tests')]" nolabel="1" />
+                                    </group>
+                                    <group string="Viral Tests" colspan="2">
+                                        <field name="test_ids" widget="many2many_checkboxes"
+                                            domain="[('category', '=', 'virus_tests')]" nolabel="1" />
+                                    </group>
+                                </group>
+                                <!-- Fourth Row -->
+                                <group>
+                                    <group string="General Health Checks" colspan="2">
+                                        <field name="test_ids" widget="many2many_checkboxes"
+                                            domain="[('category', '=', 'general_health')]"
+                                            nolabel="1" />
+                                    </group>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- <page string="Lines">
+
+                            <field name="line_ids" widget="one2many_list" />
+
+                        </page> -->
+                        <page string="Samples" invisible="state in ['draft']">
+
+                            <field name="sample_ids" widget="one2many_list" />
+
+                        </page>
+                    </notebook>
+                    <group string="Additional Information">
+                        <field name="other_info" nolabel="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

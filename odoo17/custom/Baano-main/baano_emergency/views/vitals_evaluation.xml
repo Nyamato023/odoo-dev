@@ -1,0 +1,130 @@
+<odoo>
+    <!-- Form View for Evaluation -->
+    <record id="view_baano_evaluation_form" model="ir.ui.view">
+        <field name="name">baano.evaluation.form</field>
+        <field name="model">baano.evaluation</field>
+        <field name="arch" type="xml">
+            <form string="Clinical Evaluation">
+                <sheet>
+                    <!-- Title with Patient ID -->
+                    <div class="oe_title">
+                        <h1>
+                            <field name="patient_id" readonly="1" />
+                        </h1>
+                    </div>
+                    <group>
+                        <!-- Appointment and Physician Information -->
+                        <group>
+                            <field name="appointment_id" readonly="1" />
+                            <field name="physician_id" readonly="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <!-- Clinical Assessment Page -->
+                        <page name="clinical_ass" string="Clinical Assessment">
+                            <group>
+                                <!-- Left column vitals -->
+                                <group>
+                                    <label for="weight" />
+                                    <div class="o_row">
+                                        <field name="weight" />
+                                        <field name="acs_weight_name" />
+                                    </div>
+                                    <label for="height" />
+                                    <div class="o_row">
+                                        <field name="height" />
+                                        <field name="acs_height_name" />
+                                    </div>
+                                    <label for="temp" />
+                                    <div class="o_row">
+                                        <field name="temp" />
+                                        <field name="acs_temp_name" />
+                                    </div>
+                                    <field name="hr" />
+                                </group>
+                                <!-- Right column vitals -->
+                                <group>
+                                    <field name="rr" />
+                                    <label string="Systolic/Diastolic BP" for="systolic_bp" />
+                                    <div name="systolic_bp">
+                                        <div class="oe_inline" style="display: inline;">
+                                            <field name="systolic_bp" class="oe_inline" /> / <field
+                                                name="diastolic_bp" class="oe_inline" />
+                                        </div>
+                                    </div>
+                                    <label for="spo2" />
+                                    <div class="o_row">
+                                        <field name="spo2" />
+                                        <field name="acs_spo2_name" />
+                                    </div>
+                                    <label for="rbs" />
+                                    <div class="o_row">
+                                        <field name="rbs" />
+                                        <field name="acs_rbs_name" />
+                                    </div>
+                                </group>
+                                <!-- BMI and State -->
+                                <group>
+                                    <field name="bmi" />
+                                </group>
+                                <group>
+                                    <field name="bmi_state" />
+                                </group>
+                                <!-- Pain Level Section -->
+                                <separator string="Pain Level" />
+                                <group>
+                                    <group>
+                                        <label for="pain_level" />
+                                        <div class="o_row">
+                                            <field name="pain_level" />
+                                            <span>
+                                                <button name="%(action_acs_pain_level)d"
+                                                    type="action" icon="fa-question-circle"
+                                                    title="Pain Level" />
+                                            </span>
+                                        </div>
+                                        <field name="pain" colspan="2" nolabel="1" />
+                                    </group>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View for Evaluation -->
+    <record id="view_baano_evaluation_tree" model="ir.ui.view">
+        <field name="name">baano.evaluation.tree</field>
+        <field name="model">baano.evaluation</field>
+        <field name="arch" type="xml">
+            <tree string="Clinical Evaluations">
+                <field name="appointment_id" />
+                <field name="patient_id" />
+                <field name="physician_id" />
+                <field name="weight" />
+                <field name="height" />
+                <field name="temp" />
+                <field name="hr" optional="hide" />
+                <field name="rr" optional="hide" />
+                <field name="systolic_bp" optional="hide" />
+                <field name="diastolic_bp" optional="hide" />
+                <field name="spo2" optional="hide" />
+                <field name="rbs" optional="hide" />
+                <field name="bmi" />
+                <field name="bmi_state" />
+                <field name="pain_level" optional="hide" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Action to open Evaluation Views -->
+    <record id="action_baano_evaluation" model="ir.actions.act_window">
+        <field name="name">Evaluations</field>
+        <field name="res_model">baano.evaluation</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_baano_evaluation_tree" />
+        <field name="context">{'search_default_patient_id': active_id}</field>
+    </record>
+</odoo>

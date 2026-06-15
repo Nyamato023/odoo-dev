@@ -1,0 +1,127 @@
+<templates xml:space="preserve">
+    <t t-name="BaanoReports">
+        <div class="container-fluid o_report_dashboard">
+            <h3 class="text-center fs-1 bold mb-4">Emergency Health System Reports</h3>
+            <div class="row">
+                <!-- Total Handled Cases -->
+                <div class="col-md-4">
+                    <div class="card o_report_card" t-on-click="openWizard" data-report-type="Handled Cases">
+                        <div class="card-body text-center d-flex flex-column justify-content-between align-items-center">
+                            <img src="baano_emergency/static/img/consultation.png" class="card-icon" alt="Handled Cases Icon"/>
+                            <h5 class="card-title">Total Handled Cases</h5>
+                            <!-- <p class="card-count" data-model="baano.appointment"
+                            data-domain="[]">0</p> -->
+                            <p class="card-description">Overview of all cases processed by the system.</p>
+                            <p class="card-text">Print handled cases</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Total Disease Types -->
+                <div class="col-md-4">
+                    <div class="card o_report_card" t-on-click="openWizard" data-report-type="Disease Types">
+                        <div class="card-body text-center d-flex flex-column justify-content-between align-items-center">
+                            <img src="baano_emergency/static/img/prevent.png" class="card-icon" alt="Disease Types Icon"/>
+                            <h5 class="card-title">Total Disease Types</h5>
+                            <!-- <p class="card-count" data-model="baano.appointment"
+                            data-domain="[]">0</p> -->
+                            <p class="card-description">Summary of different disease categories recorded.</p>
+                            <p class="card-text">Print disease types</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Prescriptions -->
+                <div class="col-md-4">
+                    <div class="card o_report_card" t-on-click="openWizard" data-report-type="Prescriptions">
+                        <div class="card-body text-center d-flex flex-column justify-content-between align-items-center">
+                            <img src="baano_emergency/static/img/prescription.png" class="card-icon" alt="Prescriptions Icon"/>
+                            <h5 class="card-title">Prescriptions</h5>
+                            <!-- <p class="card-count" data-model="baano.prescription"
+                            data-domain="[]">0</p> -->
+                            <p class="card-description">Details of all prescribed medications.</p>
+                            <p class="card-text">Print prescriptions</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Labs -->
+                <!-- <div class="col-md-3">
+                    <div class="card o_report_card" t-on-click="openWizard" data-report-type="Labs">
+                        <div class="card-body text-center d-flex flex-column justify-content-between align-items-center">
+                            <img src="baano_emergency/static/img/flask.png" class="card-icon" alt="Labs Icon"/>
+                            <h5 class="card-title">Labs</h5>
+                            <p class="card-count" data-model="laboratory.lab_request"
+                            data-domain="[]">0</p>
+                            <p class="card-description">Reports from laboratory tests and diagnostics.</p>
+                            <p class="card-text">Print lab reports</p>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+        <style>
+            .o_report_dashboard {
+                padding: 20px;
+            }
+            .o_report_card {
+                margin-bottom: 20px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                height: 240px;
+                display: flex;
+                align-items: center;
+                transition: transform 0.2s;
+            }
+            .o_report_card:hover {
+                transform: scale(1.05);
+            }
+            .card-icon {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 10px;
+            }
+            .card-title {
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin-bottom: 8px;
+            }
+            .card-count {
+                font-size: 1.5rem;
+                font-weight: bold;
+                color: #2575fc;
+                margin: 0 0 8px 0;
+            }
+            .card-description {
+                font-size: 1rem;
+                color: #333;
+                flex: 1;
+                margin: 0 0 10px 0;
+            }
+            .card-text {
+                display: inline-block;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                font-weight: 500;
+                color: #ffffff;
+                background: linear-gradient(to right, #6a11cb, #2575fc);
+                border-radius: 8px;
+                text-align: center;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                transition: background 0.3s ease;
+            }
+            .card-text:hover {
+                background: linear-gradient(to right, #5f0ee3, #1d63e1);
+            }
+            /* Responsive adjustments */
+            @media (max-width: 767.98px) {
+                .o_report_card {
+                    height: auto;
+                    min-height: 220px;
+                }
+                .col-md-3 {
+                    margin-bottom: 15px;
+                }
+            }
+        </style>
+    </t>
+</templates>

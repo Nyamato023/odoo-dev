@@ -1,0 +1,230 @@
+<!-- Appointment Form & Tree View -->
+<odoo>
+    <record id="sequence_baano_appointment" model="ir.sequence">
+        <field name="name">Appointment Sequence</field>
+        <field name="code">baano.appointment</field>
+        <field name="prefix">CN</field>
+        <field name="padding">4</field>
+        <field name="company_id" eval="False" />
+    </record>
+
+    <record id="view_baano_appointment_search" model="ir.ui.view">
+        <field name="name">baano.appointment.search</field>
+        <field name="model">baano.appointment</field>
+        <field name="arch" type="xml">
+            <search string="Search Appointments">
+
+                <!-- Text Search -->
+                <field name="patient_id" />
+                <field name="company_id_number" />
+                <field name="age" />
+                <field name="doctor_id" />
+                <field name="appointment_date" />
+
+                <!-- Fixed Filter with Escaped Characters -->
+                <filter name="today" string="Today's Appointments"
+                    domain="[('appointment_date', '&gt;=', (context_today().strftime('%Y-%m-%d 00:00:00'))),
+                         ('appointment_date', '&lt;=', (context_today().strftime('%Y-%m-%d 23:59:59')))]" />
+
+                <!-- Other Filters -->
+                <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]" />
+                <filter name="consultation" string="In Consultation"
+                    domain="[('state', '=', 'consultation')]" />
+                <filter name="done" string="Done" domain="[('state', '=', 'done')]" />
+                <filter name="cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]" />
+
+                <!-- Group By -->
+                <group expand="1" string="Group By">
+                    <filter name="group_by_doctor" string="Doctor"
+                        context="{'group_by': 'doctor_id'}" />
+                    <filter name="group_by_status" string="Status" context="{'group_by': 'state'}" />
+                    <filter name="group_by_date" string="Appointment Date"
+                        context="{'group_by': 'appointment_date'}" />
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+
+    <!-- Appointment Form & Tree View -->
+    <record id="view_appointment_form" model="ir.ui.view">
+        <field name="name">baano.appointment.form</field>
+        <field name="model">baano.appointment</field>
+        <field name="arch" type="xml">
+            <form string="Consultation">
+                <!-- Status Header Buttons -->
+                <header>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,consultation,done" />
+                    <button name="action_confirm" string="Confirm" type="object"
+                        class="oe_highlight" invisible="state != 'draft'" />
+                    <button name="action_done" string="Mark as Done" type="object"
+                        class="oe_highlight" invisible="state != 'consultation'" />
+                    <button string="Prescribe" type="object" name="action_prescribe"
+                        class="oe_highlight" invisible="state != 'consultation'" />
+                    <button name="action_cancel" string="Cancel" type="object"
+                        invisible="state in ('done', 'cancelled')" />
+                    <button name="action_draft" string="Set to Draft" type="object"
+                        invisible="state != 'cancelled'" />
+
+                </header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box"
+                    >
+                        <button string="Lab Request" type="object" name="action_request_lab"
+                            class="oe_stat_button" icon="fa-flask" />
+
+                        <button string="View Prescriptions" type="object" name="view_prescriptions"
+                            class="oe_stat_button" icon="fa-file-text-o" />
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Consultation Number" />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <!-- Basic Info Group -->
+                    <group>
+                        <group>
+                            <field name="patient_id" />
+                            <field name="age" />
+                            <field name="doctor_id" />
+                        </group>
+                        <group>
+                            <field name="appointment_date" widget="date" />
+                            <field name="start_time" widget="float_time"
+                                invisible="state in 'draft'" />
+                            <field name="end_time" widget="float_time" invisible="state in 'draft'" />
+                        </group>
+                    </group>
+
+                    <!-- Notebook Section for Tabs -->
+                    <notebook>
+                        <page name="clinical_ass" string="Clinical Assessment"
+                        >
+                            <group>
+                                <group>
+                                    <label for="weight" />
+                                    <div class="o_row">
+                                        <field name="weight" />
+                                        <field name="acs_weight_name" />
+                                    </div>
+                                    <label for="height" />
+                                    <div class="o_row">
+                                        <field name="height" />
+                                        <field name="acs_height_name" />
+                                    </div>
+                                    <label for="temp" />
+                                    <div class="o_row">
+                                        <field name="temp" />
+                                        <field name="acs_temp_name" />
+                                    </div>
+                                    <field name="hr" />
+                                </group>
+                                <group>
+                                    <field name="rr" />
+                                    <label string="Systolic/Diastolic BP" for="systolic_bp" />
+                                    <div name="systolic_bp">
+                                        <div class="oe_inline" style="display: inline;">
+                                            <field name="systolic_bp" class="oe_inline" />/<field
+                                                name="diastolic_bp" class="oe_inline" />
+                                        </div>
+                                    </div>
+                                    <label for="spo2" />
+                                    <div class="o_row">
+                                        <field name="spo2" />
+                                        <field name="acs_spo2_name" />
+                                    </div>
+                                    <label for="rbs" />
+                                    <div class="o_row">
+                                        <field name="rbs" />
+                                        <field name="acs_rbs_name" />
+                                    </div>
+                                    <label for="fbs" />
+                                    <div class="o_row">
+                                        <field name="fbs" />
+                                        <field name="acs_rbs_name" />
+                                    </div>
+                                    <label for="hbl" />
+                                    <div class="o_row">
+                                        <field name="hbl" />
+                                        <field name="acs_hbl_name" />
+                                    </div>
+                                </group>
+                                <group>
+                                    <field name="bmi" />
+                                </group>
+                                <group>
+                                    <field name="bmi_state" />
+                                </group>
+                                <separator string="Pain Level" />
+                                <group>
+                                    <group>
+                                        <label for="pain_level" />
+                                        <div class="o_row">
+                                            <field name="pain_level" />
+                                            <span>
+                                                <button name="%(action_acs_pain_level)d"
+                                                    type="action" icon="fa-question-circle"
+                                                    title="Pain Level" />
+                                            </span>
+                                        </div>
+                                        <field name="pain" colspan="2" nolabel="1" />
+                                    </group>
+                                </group>
+                            </group>
+                        </page>
+                        <!-- Medical Info Tab -->
+                        <page string="Medical Info" invisible="state in 'draft'">
+                            <group col="2">
+                                <field name="medical_complain" />
+                                <!-- <field name="vital_signs" /> -->
+                                <field name="physical_exam" />
+                                <field name="diagnosis_id" />
+                                <field name="treatment" />
+                            </group>
+                        </page>
+
+                        <!-- Past Medical History Tab -->
+                        <page string="Past Medical History">
+                            <field name="previous_appointments_ids" readonly="1">
+                                <tree>
+                                    <field name="appointment_date" />
+                                    <field name="doctor_id" />
+                                    <field name="state" />
+                                    <field name="diagnosis_id" />
+                                    <field name="treatment" />
+                                </tree>
+                            </field>
+                        </page>
+
+                        <!-- Notes Tab -->
+                        <page string="Notes">
+                            <group>
+                                <field name="notes" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_appointment_tree" model="ir.ui.view">
+        <field name="name">baano.appointment.tree</field>
+        <field name="model">baano.appointment</field>
+        <field name="arch" type="xml">
+            <tree string="Consultation">
+                <field name="name" />
+                <field name="company_id_number" />
+                <field name="patient_id" />
+                <field name="doctor_id" />
+                <field name="state" />
+                <field name="appointment_date" />
+            </tree>
+        </field>
+    </record>
+</odoo>

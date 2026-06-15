@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Root App Menu -->
+        <menuitem id="menu_hospital_coordination_root"
+                  name="H &amp; P Experience"
+                  web_icon="hospital_coordination,static/description/icon.png"
+                  sequence="10"/>
+
+        <!-- First Level Menus -->
+        <menuitem id="menu_customer_satisfaction"
+                  name="Customer Satisfaction"
+                  parent="menu_hospital_coordination_root"
+                  action="action_customer_satisfaction"
+                  sequence="10"/>
+
+        <menuitem id="menu_hospital_experience"
+                  name="Hospital Experience"
+                  parent="menu_hospital_coordination_root"
+                  sequence="20"/>
+
+        <!-- Hospital Experience Sub Menus -->
+        <menuitem id="menu_hospital_daily_checklist"
+                  name="Daily Checklist"
+                  parent="menu_hospital_experience"
+                  action="action_hospital_daily_checklist"
+                  sequence="10"/>
+
+        <menuitem id="menu_hospital_weekly_checklist"
+                  name="Weekly Checklist"
+                  parent="menu_hospital_experience"
+                  action="action_hospital_weekly_checklist"
+                  sequence="20"/>
+    </data>
+</odoo>
+

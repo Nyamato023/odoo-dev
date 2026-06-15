@@ -1,0 +1,181 @@
+<!-- Patient Views and Actions -->
+<odoo>
+    <record id="sequence_patient_id" model="ir.sequence">
+        <field name="name">Patient ID Sequence</field>
+        <field name="code">baano.patient</field>
+        <field name="prefix">PAT</field>
+        <field name="padding">4</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+    </record>
+    <!-- Vitals Action -->
+    <record id="action_vitals" model="ir.actions.act_window">
+        <field name="name">Vitals</field>
+        <field name="res_model">baano.evaluation</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+         <field name="domain">[('patient_id', '=', active_id)]</field>
+        <field name="context">{'search_default_patient_id': active_id}</field>
+    </record>
+
+    <!-- Past Visits Action -->
+    <record id="action_past_visits" model="ir.actions.act_window">
+        <field name="name">Past Visits</field>
+        <field name="res_model">baano.appointment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+        <field name="domain">[('patient_id', '=', active_id), ('appointment_date', '&lt;',
+            current_date)]</field>
+        <field name="context">{'search_default_patient_id': active_id}</field>
+    </record>
+
+    <record id="view_baano_patient_search" model="ir.ui.view">
+        <field name="name">baano.patient.search</field>
+        <field name="model">baano.patient</field>
+        <field name="arch" type="xml">
+            <search string="Search Patients">
+
+                <!-- Text search across name, mobile, and patient_id -->
+                <field name="partner_id" string="Name" />
+                <field name="patient_id" />
+                <field name="age" />
+                <field name="company_id_number" />
+                <field name="mobile" />
+
+                <!-- Filters -->
+                <filter name="my_site" string="My Site"
+                    domain="[('site_id', '!=', False)]" />
+                <filter name="has_mobile" string="Has Mobile"
+                    domain="[('mobile', '!=', False)]" />
+                <filter name="has_company_id" string="Has Company ID"
+                    domain="[('company_id_number', '!=', False)]" />
+
+                <!-- Group by -->
+                <group expand="1" string="Group By">
+                    <filter name="group_by_company" string="Site" context="{'group_by': 'site_id'}" />
+                    <filter name="group_by_department" string="Department"
+                        context="{'group_by': 'department_ids'}" />
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+    <!-- Form View for Patient -->
+    <record id="view_patient_form" model="ir.ui.view">
+        <field name="name">baano.patient.form</field>
+        <field name="model">baano.patient</field>
+        <field name="arch" type="xml">
+            <form string="Patient" class="o_form_class">
+                <header>
+                    <button name="action_create_appointment" type="object"
+                        string="Create Consultation" class="btn btn-primary"
+                        invisible="context.get('params', {}).get('id', False) == False" />
+                </header>
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box"
+                    >
+                        <button string="Vitals" type="action" name="%(action_vitals)d"
+                            class="oe_stat_button" icon="fa-heartbeat" />
+                        <button string="Past Visits" type="action" name="%(action_past_visits)d"
+                            class="oe_stat_button" icon="fa-history" />
+                        <button string="Lab Reports" type="object" name="test"
+                            class="oe_stat_button" icon="fa-file-text-o" />
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Patient Name" />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="General Information" col="2">
+                            <field name="patient_id" readonly="1" />
+                            <field name="mobile" />
+                            <field name="company_id_number" />
+                            <field name="gender" />
+                            <field name="birthday" />
+                            <field name="age" />
+                        </group>
+                        <group string="Location &amp; Department" col="2">
+                            <field name="site_id" />
+                             <field name="company_id" invisible="1"/>
+                            <field name="department_ids" widget="many2many_tags"
+                                context="{'default_name': 'Accounting'}" />
+
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Tree View for Patient -->
+    <record id="view_patient_tree" model="ir.ui.view">
+        <field name="name">baano.patient.tree</field>
+        <field name="model">baano.patient</field>
+        <field name="arch" type="xml">
+            <tree string="Patients">
+                <field name="patient_id" />
+                <field name="name" />
+                <field name="mobile" />
+                <!-- <field name="company_id" invisible="1"/> -->
+                 <field name="site_id" />
+                <field name="age" />
+                <field name="gender" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_patient_kanban" model="ir.ui.view">
+        <field name="name">baano.patient.kanban</field>
+        <field name="model">baano.patient</field>
+        <field name="arch" type="xml">
+            <kanban create="false" quick_create="false" class="o_kanban_view">
+                <field name="name" />
+                <field name="mobile" />
+                <field name="company_id" invisible="1"/>
+                 <field name="site_id" />
+                <field name="age" />
+                <field name="gender" />
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_card">
+                            <div class="oe_kanban_card_header">
+                                <h4 class="o_kanban_title text-primary">
+                                    <field name="name" />
+                                </h4>
+                            </div>
+                            <div class="o_kanban_card_body">
+                                <div>
+                                    <strong>Mobile:</strong>
+                                    <field name="mobile" />
+                                </div>
+                                <div>
+                                    <strong>Site:</strong>
+                                    <field name="site_id" />
+                                </div>
+                                <div>
+                                    <strong>Age:</strong>
+                                    <field name="age" /> yrs</div>
+                                <div>
+                                    <strong>Gender:</strong>
+                                    <field name="gender" />
+                                </div>
+                            </div>
+                            <div class="oe_kanban_footer mt-2">
+                                <button name="action_create_appointment"
+                                    type="object" class="btn btn-sm btn-primary"
+                                    string="Create Consultation" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>

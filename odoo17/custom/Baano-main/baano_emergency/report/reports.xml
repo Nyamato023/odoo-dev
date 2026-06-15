@@ -1,0 +1,41 @@
+<odoo>
+    <!-- Disease Types Report -->
+    <record id="action_disease_types_report" model="ir.actions.report">
+        <field name="name">Disease Types Report</field>
+        <field name="model">baano.appointment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">baano_emergency.disease_types_report</field>
+        <field name="binding_model_id" eval="ref('baano_emergency.model_baano_appointment')" />
+        <field name="print_report_name">'Disease Report - %s' % (object.name or 'Summary')</field>
+    </record>
+
+    <!-- Handled Cases Report -->
+    <record id="action_handled_cases_report" model="ir.actions.report">
+        <field name="name">Handled Cases Report</field>
+        <field name="model">baano.appointment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">baano_emergency.handled_cases_report</field>
+        <field name="binding_model_id" eval="ref('baano_emergency.model_baano_appointment')" />
+        <field name="print_report_name">'Handled Cases - %s' % (object.name or 'Summary')</field>
+    </record>
+
+    <!-- Laboratory Test Cases Report -->
+    <record id="action_lab_test_cases_report" model="ir.actions.report">
+        <field name="name">Laboratory Test Cases Report</field>
+        <field name="model">baano.appointment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">baano_emergency.lab_report</field>
+        <field name="binding_model_id" eval="ref('baano_emergency.model_baano_appointment')" />
+        <field name="print_report_name">'Lab Test Cases - %s' % (object.name or 'Summary')</field>
+    </record>
+
+    <!-- Prescription Summary Report -->
+    <record id="action_prescription_summary_report" model="ir.actions.report">
+        <field name="name">Prescription Summary Report</field>
+        <field name="model">baano.appointment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">baano_emergency.prescriptions_report</field>
+        <field name="binding_model_id" eval="ref('baano_emergency.model_baano_appointment')" />
+        <field name="print_report_name">'Prescription Summary - %s' % (object.name or 'Summary')</field>
+    </record>
+</odoo>

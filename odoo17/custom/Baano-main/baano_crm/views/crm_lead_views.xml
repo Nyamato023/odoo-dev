@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Forcefully override the standard Odoo My Activities Tree View -->
+    <record id="crm_lead_view_tree_activity_inherit_baano" model="ir.ui.view">
+        <field name="name">crm.lead.view.tree.activity.inherit.baano</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_list_activities"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="replace">
+                <tree string="My Activities">
+                    <header>
+                        <button name="%(crm.action_lead_mass_mail)d" type="action" string="Email" />
+                        <button name="%(crm_sms.crm_lead_act_window_sms_composer_single)d" type="action" string="SMS" />
+                    </header>
+                    <field name="create_date" string="Created on" widget="datetime"/>
+                    <field name="contact_name" string="Patient Name"/>
+                    <field name="phone" string="Phone Number"/>
+                    <field name="gender"/>
+                    <field name="receiving_agent_id"/>
+                    <field name="converting_agent_id"/>
+                    <field name="location_id" string="Lead Location"/>
+
+                    <!-- Hidden fields for logic and decorations -->
+                    <field name="my_activity_date_deadline" column_invisible="True"/>
+                    <field name="activity_calendar_event_id" column_invisible="True"/>
+                    <field name="activity_state" column_invisible="True"/>
+
+                    <!-- Restored standard action buttons -->
+                    <button name="%(crm.action_lead_mail_compose)d" type="action" string="Email" icon="fa-envelope"/>
+                    <button name="%(crm_sms.crm_lead_act_window_sms_composer_multi)d" type="action" string="SMS" icon="fa-comments" />
+                    <button name="action_reschedule_meeting" type="object" string="Reschedule"
+                        icon="fa-calendar" invisible="not my_activity_date_deadline or not activity_calendar_event_id"/>
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Callers Tree View (Optimized for Call logs) -->
+    <record id="view_crm_lead_tree_callers" model="ir.ui.view">
+        <field name="name">crm.lead.tree.callers</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <tree string="Callers">
+                <header>
+                    <button name="action_generate_leads" type="object" class="o_button_generate_leads"
+                            string="Generate Leads" groups="sales_team.group_sale_manager" display="always"/>
+                </header>
+                <field name="phone" string="Caller"/>
+                <field name="location_id"/>
+                <field name="receiving_agent_id"/>
+                <field name="gender"/>
+                <field name="create_date" string="Created on" optional="hide"/>
+                <field name="contact_name" optional="hide"/>
+                <field name="partner_name" string="Company Name" optional="hide"/>
+                <field name="state_id" optional="hide"/>
+                <field name="campaign_id" string="Channel" optional="hide"/>
+                <field name="medium_id" optional="hide"/>
+                <field name="source_id" optional="hide"/>
+                <field name="probability" optional="hide"/>
+                <field name="tag_ids" widget="many2many_tags" optional="hide"/>
+                <field name="priority" widget="priority" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Inherit Lead Form to add custom fields and minimalist Opportunity view -->
+    <record id="crm_lead_view_form_inherit_baano" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.baano</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- 1. Hide standard elements for Opportunities -->
+            <xpath expr="//div[hasclass('oe_title')]" position="attributes">
+                <attribute name="invisible">type == 'opportunity'</attribute>
+            </xpath>
+            <xpath expr="//group[@name='opportunity_partner']" position="attributes">
+                <attribute name="invisible">type == 'opportunity'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']/ancestor::group[1]" position="attributes">
+                <attribute name="invisible">type == 'opportunity'</attribute>
+            </xpath>
+            <xpath expr="//notebook" position="attributes">
+                <attribute name="invisible">type == 'opportunity'</attribute>
+            </xpath>
+
+            <!-- 2. Insert Minimalist Opportunity Layout (Only for Opportunities) -->
+            <xpath expr="//div[hasclass('oe_title')]" position="before">
+                <div invisible="type == 'lead'">
+                    <!-- Invisible fields for context support -->
+                    <field name="contact_name" invisible="1"/>
+                    <field name="partner_name" invisible="1"/>
+                    <field name="street" invisible="1"/>
+                    <field name="street2" invisible="1"/>
+                    <field name="city" invisible="1"/>
+                    <field name="title" invisible="1"/>
+                    <field name="state_id" invisible="1"/>
+                    <field name="zip" invisible="1"/>
+                    <field name="country_id" invisible="1"/>
+                    <field name="function" invisible="1"/>
+                    <field name="mobile" invisible="1"/>
+                    <field name="website" invisible="1"/>
+                    <field name="lang_code" invisible="1"/>
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="phone" widget="phone" placeholder="Phone Number"/>
+                        </h1>
+                        <field name="probability" invisible="1"/>
+                    </div>
+
+                    <group>
+                        <group>
+                            <field name="partner_id" widget="res_partner_many2one" string="Customer" 
+                                   domain="[('create_uid.employee_ids.job_id.name', '=', 'Call Center Member')]"
+                                   context="{
+                                       'res_partner_search_mode': type == 'opportunity' and 'customer' or False,
+                                       'default_name': contact_name or partner_name,
+                                       'default_street': street,
+                                       'default_is_company': type == 'opportunity' and contact_name == False,
+                                       'default_company_name': type == 'opportunity' and partner_name,
+                                       'default_street2': street2,
+                                       'default_city': city,
+                                       'default_title': title,
+                                       'default_state_id': state_id,
+                                       'default_zip': zip,
+                                       'default_country_id': country_id,
+                                       'default_function': function,
+                                       'default_phone': phone,
+                                       'default_mobile': mobile,
+                                       'default_email': email_from,
+                                       'default_user_id': user_id,
+                                       'default_team_id': team_id,
+                                       'default_website': website,
+                                       'default_lang': lang_code,
+                                       'show_vat': True,
+                                   }"/>
+                            <field name="age"/>
+                        </group>
+                        <group>
+                            <field name="receiving_agent_id" readonly="1"/>
+
+                            <field name="converting_agent_id" 
+                                   required="service_type != False"
+                                   domain="[('job_id.name', 'in', ['Call Center Member', 'Marketing and Sales Director', 'Marketing Member'])]"/>
+                            <field name="service_type"/>
+                        </group>
+                    </group>
+                    
+                    <div class="mt-4 border-top pt-3">
+                         <group>
+                            <field name="location_id" string="Lead Location" options="{'no_create': True}" readonly="1"/>
+                         </group>
+                    </div>
+
+                    <notebook invisible="not service_type" class="mt-4">
+                        <page string="Online Consultation" invisible="service_type != 'online'">
+                            <group>
+                                <field name="doctor_id" options="{'no_create': True}" required="service_type == 'online'"/>
+                                <field name="complain_id" string="Chief Complaints" options="{'no_create': True}" required="service_type == 'online'"/>
+                            </group>
+                        </page>
+                        <page string="Hospital Booking" invisible="service_type != 'hospital'">
+                            <group>
+                                <field name="hospital_id" string="Hospital Name" options="{'no_create': True}" required="service_type == 'hospital'"/>
+                            </group>
+                        </page>
+                        <page string="Enterprise" invisible="service_type != 'enterprise'">
+                            <group>
+                                <field name="enterprise_company_id" string="Company" options="{'no_create': True}" required="service_type == 'enterprise'"/>
+                                <field name="enterprise_id" string="Hospitals" options="{'no_create': True}" required="service_type == 'enterprise'"/>
+                            </group>
+                        </page>
+                        <page string="Home Care" invisible="service_type != 'home'">
+                            <!-- Empty for now -->
+                        </page>
+                    </notebook>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Simplified Form View for Callers (Inherited to keep perfect header) -->
+    <record id="view_crm_lead_form_callers" model="ir.ui.view">
+        <field name="name">crm.lead.form.callers</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <!-- Replace the main sheet content -->
+            <xpath expr="//sheet" position="replace">
+                <sheet>
+                    <field name="type" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                    <field name="team_id" invisible="1"/>
+                    <field name="user_id" invisible="1"/>
+                    <field name="company_id" invisible="1"/>
+                    <field name="probability" invisible="1"/>
+                    <!-- Invisible fields for context support -->
+                    <field name="contact_name" invisible="1"/>
+                    <field name="partner_name" invisible="1"/>
+                    <field name="street" invisible="1"/>
+                    <field name="street2" invisible="1"/>
+                    <field name="city" invisible="1"/>
+                    <field name="title" invisible="1"/>
+                    <field name="state_id" invisible="1"/>
+                    <field name="zip" invisible="1"/>
+                    <field name="country_id" invisible="1"/>
+                    <field name="function" invisible="1"/>
+                    <field name="mobile" invisible="1"/>
+                    <field name="website" invisible="1"/>
+                    <field name="lang_code" invisible="1"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="phone" widget="phone" placeholder="Phone Number" required="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <!-- Capture View (Lead Stage) - Clean Vertical Layout -->
+                        <group invisible="type == 'opportunity'">
+                            <field name="gender" required="1"/>
+                            <field name="location_id" options="{'no_create': True}" required="1"/>
+                            <field name="campaign_id" string="Channel" placeholder="e.g. Website, Phone..." required="1"/>
+                            <field name="receiving_agent_id" required="1"
+                                   domain="['|', 
+                                            '&amp;', '|', ('user_id.login', '=', 'shamsabaano10@gmail.com'), ('user_id.name', '=', 'Call Center'), ('job_id.name', 'in', ['Call Center Internship', 'Call Center Member']), 
+                                            '&amp;', '|', ('user_id.login', '=', 'enterprise@baano.so'), ('user_id.name', '=', 'Enterprise User'), ('job_id.name', '=', 'Enterprise Coordinator')]"/>
+                        </group>
+                        
+                        <!-- Opportunity View (After Conversion) - Full Baano Fields -->
+                        <group invisible="type == 'lead'">
+                            <field name="partner_id" widget="res_partner_many2one" string="Customer" 
+                                   domain="[('create_uid.employee_ids.job_id.name', '=', 'Call Center Member')]"
+                                   context="{
+                                       'res_partner_search_mode': type == 'opportunity' and 'customer' or False,
+                                       'default_name': contact_name or partner_name,
+                                       'default_street': street,
+                                       'default_is_company': type == 'opportunity' and contact_name == False,
+                                       'default_company_name': type == 'opportunity' and partner_name,
+                                       'default_street2': street2,
+                                       'default_city': city,
+                                       'default_title': title,
+                                       'default_state_id': state_id,
+                                       'default_zip': zip,
+                                       'default_country_id': country_id,
+                                       'default_function': function,
+                                       'default_phone': phone,
+                                       'default_mobile': mobile,
+                                       'default_email': email_from,
+                                       'default_user_id': user_id,
+                                       'default_team_id': team_id,
+                                       'default_website': website,
+                                       'default_lang': lang_code,
+                                       'show_vat': True,
+                                   }"/>
+                            <field name="email_from" string="Email"/>
+                            <field name="age"/>
+                            <field name="gender"/>
+                            <field name="service_type"/>
+                            <field name="location_id" string="Location" options="{'no_create': True}"/>
+                        </group>
+                        <group invisible="type == 'lead'">
+                            <field name="user_id" widget="many2one_avatar_user" string="Salesperson"/>
+                            <field name="date_deadline" string="Expected Closing"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                            <field name="priority" widget="priority"/>
+
+                            <field name="converting_agent_id" 
+                                   required="service_type != False"
+                                   domain="[('job_id.name', 'in', ['Call Center Member', 'Marketing and Sales Director', 'Marketing Member'])]"/>
+                        </group>
+                    </group>
+                    <notebook invisible="not service_type" class="mt-4">
+                        <page string="Online Consultation" invisible="service_type != 'online'">
+                            <group>
+                                <field name="doctor_id" options="{'no_create': True}" required="service_type == 'online'"/>
+                                <field name="complain_id" string="Chief Complaints" options="{'no_create': True}" required="service_type == 'online'"/>
+                            </group>
+                        </page>
+                        <page string="Hospital Booking" invisible="service_type != 'hospital'">
+                            <group>
+                                <field name="hospital_id" string="Hospital Name" options="{'no_create': True}" required="service_type == 'hospital'"/>
+                            </group>
+                        </page>
+                        <page string="Enterprise" invisible="service_type != 'enterprise'">
+                            <group>
+                                <field name="enterprise_company_id" string="Company" options="{'no_create': True}" required="service_type == 'enterprise'"/>
+                                <field name="enterprise_id" string="Hospitals" options="{'no_create': True}" required="service_type == 'enterprise'"/>
+                            </group>
+                        </page>
+                        <page string="Home Care" invisible="service_type != 'home'">
+                            <!-- Empty for now -->
+                        </page>
+                    </notebook>
+                </sheet>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Callers Action (Filters for type='lead') -->
+    <record id="action_crm_callers" model="ir.actions.act_window">
+        <field name="name">Callers</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="domain">[('type', '=', 'lead')]</field>
+        <field name="context">{'default_type': 'lead', 'search_default_type_lead': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Callers found. Let's create one!
+            </p>
+        </field>
+    </record>
+
+    <!-- Link tree view specifically for this action -->
+    <record id="action_crm_callers_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="view_crm_lead_tree_callers"/>
+        <field name="act_window_id" ref="action_crm_callers"/>
+    </record>
+
+    <!-- Link Simplified Form specifically for this action -->
+    <record id="action_crm_callers_form" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_crm_lead_form_callers"/>
+        <field name="act_window_id" ref="action_crm_callers"/>
+    </record>
+    <!-- Inherit Opportunity Tree View to match Baano requirements (All Conversions) -->
+    <record id="crm_lead_view_tree_opportunity_inherit_baano" model="ir.ui.view">
+        <field name="name">crm.lead.view.tree.opportunity.inherit.baano</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="replace">
+                <tree string="Opportunities" sample="1" multi_edit="1">
+                    <header>
+                        <button name="action_generate_leads" type="object" class="o_button_generate_leads"
+                                string="Generate Leads" groups="sales_team.group_sale_manager" display="always"/>
+                        <button name="%(crm.action_lead_mass_mail)d" type="action" string="Email" />
+                        <button name="%(crm_sms.crm_lead_act_window_sms_composer_single)d" type="action" string="SMS" />
+                    </header>
+                    <field name="create_date" string="Created on" widget="datetime"/>
+                    <field name="contact_name" string="Patient Name"/>
+                    <field name="phone" string="Phone Number"/>
+                    <field name="gender"/>
+                    <field name="receiving_agent_id"/>
+                    <field name="converting_agent_id"/>
+                    
+                    <!-- Hidden fields for logic -->
+                    <field name="probability" column_invisible="True"/>
+                    <field name="user_id" column_invisible="True"/>
+                    <field name="team_id" column_invisible="True"/>
+                    <field name="message_needaction" column_invisible="True"/>
+                    <field name="active" column_invisible="True"/>
+
+                    <!-- Action buttons -->
+                    <button name="%(crm.action_lead_mail_compose)d" type="action" string="Email" icon="fa-envelope"/>
+                    <button name="%(crm_sms.crm_lead_act_window_sms_composer_multi)d" type="action" string="SMS" icon="fa-comments" />
+                </tree>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Optimized My Activities Action (Ensuring it uses our inherited view) -->
+    <record id="crm.crm_lead_action_my_activities" model="ir.actions.act_window">
+        <field name="view_id" ref="crm_lead_view_tree_activity_inherit_baano"/>
+    </record>
+
+    <!-- Make List View default for All Conversions by overriding sequences -->
+    <record id="crm.crm_lead_action_pipeline_view_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="0"/>
+    </record>
+    <record id="crm.crm_lead_action_pipeline_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+    </record>
+
+    <record id="crm.crm_lead_action_pipeline" model="ir.actions.act_window">
+        <field name="view_mode">tree,kanban,graph,pivot,calendar,form,activity</field>
+    </record>
+</odoo>

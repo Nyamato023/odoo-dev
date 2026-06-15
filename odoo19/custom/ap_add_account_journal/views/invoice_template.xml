@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <template id="report_invoice_new_account_journal" inherit_id="account.report_invoice_document">
+
+            <xpath expr="//div[@id='total']" position="after">
+
+                <t t-set="target_lines" t-value="o.line_ids.filtered(lambda l: l.account_id.code == '860200')" />
+
+                <t t-if="target_lines">
+
+                    <table class="table table-sm" style="margin-top:10px;">
+                        <t t-foreach="target_lines" t-as="line">
+                            <tr>
+                                <td>
+                                    <strong>
+                                        <t t-esc="line.account_id.code"/>
+                                        <t t-esc="line.account_id.name"/>
+                                    </strong>
+                                </td>
+                                <td class="text-end">
+                                    <span t-out="line.debit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                </td>
+                            </tr>
+                        </t>
+
+                        <tr>
+                            <td>
+                                <strong>New Total</strong>
+                            </td>
+                            <td class="text-end">
+                                <span t-out="o.amount_total - sum(target_lines.mapped('debit'))" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                            </td>
+                        </tr>
+                    </table>
+
+                </t>
+
+            </xpath>
+
+        </template>
+    </data>
+</odoo>

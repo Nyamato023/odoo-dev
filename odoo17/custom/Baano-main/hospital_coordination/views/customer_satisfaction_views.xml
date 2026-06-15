@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Form View -->
+        <record id="view_customer_satisfaction_form" model="ir.ui.view">
+            <field name="name">hospital.customer.satisfaction.form</field>
+            <field name="model">hospital.customer.satisfaction</field>
+            <field name="arch" type="xml">
+                <form string="Customer Satisfaction">
+                    <sheet>
+                        <group>
+                            <field name="description" widget="html" nolabel="1"
+                                   placeholder="Enter description here..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- List View -->
+        <record id="view_customer_satisfaction_list" model="ir.ui.view">
+            <field name="name">hospital.customer.satisfaction.list</field>
+            <field name="model">hospital.customer.satisfaction</field>
+            <field name="arch" type="xml">
+                <tree string="Customer Satisfaction">
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_customer_satisfaction" model="ir.actions.act_window">
+            <field name="name">Customer Satisfaction</field>
+            <field name="res_model">hospital.customer.satisfaction</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>

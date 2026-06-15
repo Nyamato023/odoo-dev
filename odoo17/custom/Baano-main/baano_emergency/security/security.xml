@@ -1,0 +1,16 @@
+<odoo>
+    <!-- Define a category for Healthcare -->
+    <record id="module_category_healthcare" model="ir.module.category">
+        <field name="name">Healthcare</field>
+        <field name="description">Healthcare Management</field>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- Define a group for Baano Users, child of Internal User -->
+    <record id="group_baano_user" model="res.groups">
+        <field name="name">Baano User</field>
+        <field name="category_id" ref="baano_emergency.module_category_healthcare" />
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Prescription Report Template -->
+        <template id="prescriptions_report">
+            <t t-name="baano_emergency.prescriptions_report">
+                <!-- Use the external layout template for Odoo reports -->
+                <t t-call="web.external_layout">
+                    <main class="page">
+                        <div class="oe_structure">
+                            <!-- Report Title -->
+                            <h1 class="text-center text-danger mb-4">Total Prescription Cases</h1>
+
+                            <!-- ========== Summary Section ========== -->
+                            <t t-set="all_cases" t-value="docs" />
+                            <div class="card mb-4">
+                                <div class="card-body bg-light">
+                                    <h3 class="card-title text-center mb-3">Summary</h3>
+
+                                    <div class="row mb-2">
+                                        <!-- Total Count, Male, Female -->
+                                        <div class="col-4">
+                                            <p>
+                                                <strong>Total Cases:</strong>
+                                                <span t-esc="len(all_cases)" />
+                                            </p>
+                                            <p class="ms-3 mb-1"> Male: <span
+                                                    t-esc="len([c for c in all_cases if c.patient_id.gender == 'male'])" />
+                                            </p>
+                                            <p class="ms-3"> Female: <span
+                                                    t-esc="len([c for c in all_cases if c.patient_id.gender == 'female'])" />
+                                            </p>
+                                        </div>
+
+                                        <!-- Company Information -->
+                                        <!-- <div class="col-4">
+                                            <p>
+                                                <strong>Company:</strong>
+                                                <t
+                                                    t-if="all_cases and all_cases[0].patient_id.company">
+                                                    <span t-field="all_cases[0].patient_id.company" />
+                                                </t>
+                                                <t t-else="">N/A</t>
+                                            </p>
+                                        </div> -->
+
+                                        <!-- Doctor Information -->
+                                        <div class="col-4">
+                                            <p>
+                                                <strong>Doctor:</strong>
+                                                <t t-if="all_cases and all_cases[0].doctor_id">
+                                                    <span t-field="all_cases[0].doctor_id" />
+                                                </t>
+                                                <t t-else="">N/A</t>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ========== Detailed Cases Table ========== -->
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <h3 class="text-center mb-3">Cases List</h3>
+                                    <table class="table table-bordered table-sm"
+                                        style="font-size: 13px;">
+                                        <thead>
+                                            <tr>
+                                                <th>Patient Name</th>
+                                                <th>Company ID</th>
+                                                <th>Date</th>
+                                                <th>Doctor</th>
+                                                <th>Prescription</th>
+                                                <th>Quantity</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Loop over all cases and their prescription lines -->
+                                            <t t-foreach="all_cases" t-as="doc">
+                                                <t
+                                                    t-foreach="doc.prescription_id.prescription_lines"
+                                                    t-as="line">
+                                                    <tr>
+                                                        <td>
+                                                            <span t-field="doc.patient_id.name" />
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                t-field="doc.patient_id.company_id_number" />
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="doc.prescription_date" />
+                                                        </td>
+                                                        <td>
+                                                            <span
+                                                                t-field="doc.prescribing_doctor.name" />
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.medicine_id.name" />
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.qty_dose" />
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

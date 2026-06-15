@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Odoo specific
+*.log
+*.conf
+!odoo.conf.example
+filestore/
+sessions/
+*.sql
+*.pdf
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project specific (from original file)
+muk_web_theme/
+muk_web_appsbar/
+muk_web_chatter/
+muk_web_colors/
+muk_web_dialog/
+
+baano_wanaag-odoo17.code-workspace
+
+HOSPITAL_RELATIONS_DAILY_TASKS.pdf
+
+hospital_relations_plan.md
+hospital_relations_spec.md
+hospital_test_data.txt
+temp/

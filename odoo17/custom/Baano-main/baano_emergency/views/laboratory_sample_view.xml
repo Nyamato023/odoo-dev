@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Lab Sample Sequence -->
+    <record id="seq_lab_sample" model="ir.sequence">
+        <field name="name">Lab Sample Sequence</field>
+        <field name="code">laboratory.lab_sample</field>
+        <field name="prefix">SMP/</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+    </record>
+
+    <record id="view_lab_sample_tree" model="ir.ui.view">
+        <field name="name">lab.sample.tree</field>
+        <field name="model">laboratory.lab_sample</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="patient_id" />
+                <field name="status" widget="badge" decoration-bf="status == 'collected'"
+                    decoration-success="status == 'processed'" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_lab_sample_form" model="ir.ui.view">
+        <field name="name">lab.sample.form</field>
+        <field name="model">laboratory.lab_sample</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="status" widget="statusbar" />
+                    <button name="action_process" string="Process Sample" type="object"
+                        invisible="status != 'collected'" class="oe_highlight" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" string="Sample" />
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+
+                        <group>
+                            <!-- <field name="name" /> -->
+                            <field name="request_id" />
+                            <field name="patient_id" />
+                        </group>
+
+                        <group>
+                            <field name="date" />
+                            <!-- <field name="status" /> -->
+                        </group>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
