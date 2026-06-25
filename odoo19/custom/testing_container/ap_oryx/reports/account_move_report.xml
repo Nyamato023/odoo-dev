@@ -1,0 +1,52 @@
+<odoo>
+    <template id="ap_report_invoice_document_weight_volume"
+        inherit_id="account.report_invoice_document">
+
+        <!-- Add headers -->
+        <xpath expr="//th[@name='th_quantity']" position="after">
+            <th class="text-end">Weight</th>
+            <th class="text-end">Volume</th>
+        </xpath>
+
+        <!-- Add line values -->
+        <xpath expr="//td[@name='td_quantity']" position="after">
+            <td class="text-end">
+                <span t-field="line.total_weight" />
+            </td>
+            <td class="text-end">
+                <span t-field="line.total_volume" />
+            </td>
+        </xpath>
+
+        <!-- Totals -->
+        <xpath expr="//table[contains(@class, 'o_total_table')]" position="inside">
+            <tr>
+                <td>
+                    <strong>Total Quantity</strong>
+                </td>
+                <td class="text-end">
+                    <span t-field="o.invoice_total_qty" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Total Weight</strong>
+                </td>
+                <td class="text-end">
+                     <span t-field="o.invoice_total_weight" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Total Volume</strong>
+                </td>
+                <td class="text-end">
+                     <span t-field="o.invoice_total_volume" />
+                </td>
+            </tr>
+
+        </xpath>
+    </template>
+</odoo>

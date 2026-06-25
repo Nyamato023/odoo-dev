@@ -1,0 +1,51 @@
+<odoo>
+    <template id="ap_report_saleorder_document_weight_volume"
+        inherit_id="sale.report_saleorder_document">
+
+        <!-- Add headers -->
+        <xpath expr="//th[@name='th_quantity']" position="after">
+            <th class="text-end">Weight</th>
+            <th class="text-end">Volume</th>
+        </xpath>
+
+        <!-- Add line values -->
+        <xpath expr="//td[@name='td_product_quantity']" position="after">
+            <td class="text-end">
+                <span t-field="line.total_weight" />
+            </td>
+            <td class="text-end">
+                <span t-field="line.total_volume" />
+            </td>
+        </xpath>
+
+        <!-- Totals -->
+        <xpath expr="//table[contains(@class, 'o_total_table')]" position="inside">
+
+            <t t-set="total_weight"
+                t-value="sum(l.total_weight for l in doc.order_line if not l.display_type)" />
+
+            <t t-set="total_volume"
+                t-value="sum(l.total_volume for l in doc.order_line if not l.display_type)" />
+
+            <tr>
+                <td>
+                    <strong>Total Weight</strong>
+                </td>
+                <td class="text-end">
+                    <span t-esc="total_weight" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <strong>Total Volume</strong>
+                </td>
+                <td class="text-end">
+                    <span t-esc="total_volume" />
+                </td>
+            </tr>
+
+        </xpath>
+
+    </template>
+</odoo>
