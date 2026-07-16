@@ -1,0 +1,43 @@
+.casa-member-application {
+    background: #f7f8fb;
+    min-height: 70vh;
+}
+
+.casa-form-container {
+    max-width: 960px;
+}
+
+.casa-progress {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.35rem;
+}
+
+.casa-progress-step {
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-bottom: 3px solid #d8dce5;
+    padding: 0.5rem 0;
+}
+
+.casa-progress-step.active,
+.casa-progress-step.done {
+    color: #1f2447;
+    border-color: #1f2447;
+}
+
+.casa-progress-number {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    background: #e9ebf2;
+    font-weight: 600;
+}
+
+@media (max-width: 767.98px) {
+    .casa-progress-label { display: none; }
+}

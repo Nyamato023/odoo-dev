@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="mail_template_member_application_otp" model="mail.template">
+        <field name="name">CASA Application: OTP and Resume</field>
+        <field name="model_id" ref="model_casa_member_application"/>
+        <field name="subject">Verify your CASA application {{ object.reference }}</field>
+        <field name="email_from">{{ user.email_formatted }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Hello <t t-out="object.contact_name"/>,</p>
+                <p>Your verification code is <strong t-out="ctx.get('otp')"/>. It expires in 10 minutes.</p>
+                <p><a t-att-href="object.resume_url">Finish your CASA application</a></p>
+                <p>Reference: <t t-out="object.reference"/></p>
+            </div>
+        </field>
+    </record>
+    <record id="mail_template_member_application_received" model="mail.template">
+        <field name="name">CASA Application: Received</field>
+        <field name="model_id" ref="model_casa_member_application"/>
+        <field name="subject">CASA application received — {{ object.reference }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="body_html" type="html">
+            <div><p>Hello <t t-out="object.contact_name"/>,</p><p>We received your CASA membership application. Your reference is <strong t-out="object.reference"/>.</p></div>
+        </field>
+    </record>
+    <record id="mail_template_member_application_review" model="mail.template">
+        <field name="name">CASA Application: Under Review</field>
+        <field name="model_id" ref="model_casa_member_application"/>
+        <field name="subject">Your CASA application is under review — {{ object.reference }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="body_html" type="html">
+            <div><p>Hello <t t-out="object.contact_name"/>,</p><p>Your application is under review. We will contact you through this application if more information is required.</p></div>
+        </field>
+    </record>
+    <record id="mail_template_member_application_approved" model="mail.template">
+        <field name="name">CASA Application: Approved Welcome Pack</field>
+        <field name="model_id" ref="model_casa_member_application"/>
+        <field name="subject">Welcome to CASA — {{ object.entity_partner_id.casa_member_number }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Hello <t t-out="object.contact_name"/>,</p>
+                <p>Your CASA membership application has been approved.</p>
+                <ul>
+                    <li>CASA membership number: <strong t-out="object.entity_partner_id.casa_member_number"/></li>
+                    <li>MFSA membership number: <strong t-out="object.entity_partner_id.mfsa_member_number"/></li>
+                    <li>Pastel account: <strong t-out="object.entity_partner_id.pastel_account_number"/></li>
+                </ul>
+                <p><a t-att-href="object.portal_signup_url">Set your password and open the member portal</a></p>
+                <p><strong>Payment terms:</strong></p>
+                <p t-out="object.payment_terms_note"/>
+                <p>Your invoice and membership certificate are attached.</p>
+            </div>
+        </field>
+    </record>
+    <record id="mail_template_member_application_declined" model="mail.template">
+        <field name="name">CASA Application: Declined</field>
+        <field name="model_id" ref="model_casa_member_application"/>
+        <field name="subject">CASA application decision — {{ object.reference }}</field>
+        <field name="email_to">{{ object.email }}</field>
+        <field name="body_html" type="html">
+            <div><p>Hello <t t-out="object.contact_name"/>,</p><p>Your application was declined for the following reason:</p><p><strong t-out="object.decline_reason"/></p></div>
+        </field>
+    </record>
+</odoo>

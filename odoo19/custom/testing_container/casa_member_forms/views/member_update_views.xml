@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_member_update_tree" model="ir.ui.view">
+        <field name="name">member.update.tree</field>
+        <field name="model">member.update</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="type" />
+                <field name="registered_name" />
+                <field name="branch_name" />
+                <field name="contact_person" />
+                <field name="city" />
+                <field name="email" />
+                <field name="phone" />
+                <field name="active" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_member_update_line_form" model="ir.ui.view">
+        <field name="name">member.update.form</field>
+        <field name="model">member.update</field>
+        <field name="arch" type="xml">
+            <form string="Member Update">
+                <header>
+
+                    <button name="action_submit"
+                        string="Submit"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'draft'" />
+
+                    <button name="action_approve"
+                        string="Approve"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'under_review'" />
+
+                    <button name="action_reset_to_draft"
+                        string="Reset to Draft"
+                        type="object"
+                        invisible="state == 'draft'" />
+
+                    <field name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,under_review,approved" />
+
+                </header>
+
+                <sheet>
+
+                    <group>
+                        <group>
+                            <field name="type" required="1" />
+                            <field name="partner_id" />
+                        
+                        </group>
+
+                        <group>
+                            <field name="member_status"
+                                invisible="type not in ['entity']" />
+
+                            <field name="internal_status"
+                                invisible="type not in ['branch']" />
+
+                            <field name="ncr_status"
+                                invisible="type in ['contact','affiliation']" />
+                        </group>
+                    </group>
+
+                    <notebook>
+
+                        <!-- ======================================= -->
+                        <!-- GENERAL INFORMATION -->
+                        <!-- ======================================= -->
+
+                        <page string="General">
+
+                            <group>
+
+                                <group string="Company Details" invisible="type == 'contact'">
+
+                                    <field name="registered_name"
+                                        invisible="type not in ['affiliation','entity']" />
+
+                                    <field name="trading_name"
+                                        invisible="type != 'entity'" />
+
+                                    <field name="affiliation_name"
+                                        invisible="type not in ['affiliation','entity']" />
+
+                                    <field name="branch_name"
+                                        invisible="type != 'branch'" />
+
+                                    <field name="branches"
+                                        invisible="type not in ['affiliation','entity']" />
+
+                                    <field name="member_type"
+                                        invisible="type != 'entity'" />
+
+                                </group>
+
+                                <group string="Registration Numbers" invisible="type == 'contact'">
+
+                                    <field name="cipc_number"
+                                        invisible="type == 'contact'" />
+
+                                    <field name="vat_number"
+                                        invisible="type == 'contact'" />
+
+                                    <field name="ncr_number"
+                                        invisible="type != 'entity'" />
+
+                                    <field name="casa_number"
+                                        invisible="type != 'entity'" />
+
+                                    <field name="mfsa_number"
+                                        invisible="type not in ['entity','branch']" />
+
+                                    <field name="pastel_number"
+                                        invisible="type not in ['entity','branch']" />
+
+                                    <field name="branch_number"
+                                        invisible="type != 'affiliation'" />
+
+                                </group>
+
+                            </group>
+
+
+                            <!-- ======================================= -->
+                            <!-- ADDRESS -->
+                            <!-- ======================================= -->
+
+
+                            <group string="Head Office Information" invisible="type == 'contact'">
+
+                                <group>
+                                    <field name="unit" />
+                                    <field name="building" />
+                                    <field name="street" />
+                                    <field name="suburb" />
+                                </group>
+
+                                <group>
+                                    <field name="city" />
+                                    <field name="province" />
+                                    <field name="postal_code" />
+                                </group>
+
+                            </group>
+
+
+                            <!-- ======================================= -->
+                            <!-- CONTACT DETAILS -->
+                            <!-- ======================================= -->
+
+
+                            <group string="Contact Details" invisible="type != 'contact'">
+
+                                <group>
+
+                                    <field name="contact_person"
+                                        invisible="type != 'affiliation'" />
+
+                                    <field name="job_description"
+                                        invisible="type != 'contact'" />
+
+                                    <field name="office_number"
+                                        invisible="type != 'contact'" />
+
+                                    <field name="office_contact_number"
+                                        invisible="type != 'branch'" />
+
+                                    <field name="mobile_number"
+                                        invisible="type != 'contact'" />
+
+                                </group>
+
+                                <group>
+
+                                    <field name="email" />
+
+                                    <field name="phone"
+                                        invisible="type != 'contact'" />
+
+                                </group>
+
+                            </group>
+
+                        </page>
+
+                    </notebook>
+
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+  
+
+
+  
+
+</odoo>

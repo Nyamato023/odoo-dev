@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_casa_member_application" model="ir.sequence">
+        <field name="name">CASA Member Application</field>
+        <field name="code">casa.member.application</field>
+        <field name="prefix">APP/%(year)s/</field>
+        <field name="padding">5</field>
+    </record>
+    <record id="seq_casa_member_mfsa" model="ir.sequence">
+        <field name="name">MFSA Membership Number</field>
+        <field name="code">casa.member.mfsa</field>
+        <field name="prefix">MFSA-</field>
+        <field name="padding">6</field>
+    </record>
+    <record id="seq_casa_member_casa" model="ir.sequence">
+        <field name="name">CASA Membership Number</field>
+        <field name="code">casa.member.casa</field>
+        <field name="prefix">CASA-</field>
+        <field name="padding">6</field>
+    </record>
+</odoo>

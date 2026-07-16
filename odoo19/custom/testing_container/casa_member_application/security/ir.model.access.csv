@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_casa_member_application_officer,CASA member application officer,model_casa_member_application,casa_member_application.group_casa_membership_officer,1,1,1,1
+access_casa_member_application_branch_officer,CASA member application branch officer,model_casa_member_application_branch,casa_member_application.group_casa_membership_officer,1,1,1,1

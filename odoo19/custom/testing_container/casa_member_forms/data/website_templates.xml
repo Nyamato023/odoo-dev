@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_my_details_member"
+        inherit_id="portal.portal_my_details">
+
+        <xpath expr="//t[@t-call='portal.address_form_fields']"
+            position="after">
+
+            <t t-set="entity_type" t-value="current_partner.entity_type" />
+
+            <!-- ================================================= -->
+            <!-- Entity Type -->
+            <!-- ================================================= -->
+
+            <div class="col-12 mb-4">
+
+                <label class="form-label">
+                    Entity Type
+                </label>
+
+                <select name="entity_type"
+                    class="form-select">
+
+                    <option value="member"
+                        t-att-selected="'selected' if entity_type == 'member' else None">
+                        Member
+                    </option>
+
+                    <option value="stakeholder"
+                        t-att-selected="'selected' if entity_type == 'stakeholder' else None">
+                        Stakeholder
+                    </option>
+
+                    <option value="service_provider"
+                        t-att-selected="'selected' if entity_type == 'service_provider' else None">
+                        Service Provider
+                    </option>
+
+                    <option value="branch"
+                        t-att-selected="'selected' if entity_type == 'branch' else None">
+                        Branch
+                    </option>
+
+                    <option value="affiliation"
+                        t-att-selected="'selected' if entity_type == 'affiliation' else None">
+                        Affiliation
+                    </option>
+
+                    <option value="contact"
+                        t-att-selected="'selected' if entity_type == 'contact' else None">
+                        Contact
+                    </option>
+
+                </select>
+
+            </div>
+
+            <!-- member -->
+
+            <t t-if="current_partner.entity_type == 'member'">
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <strong>General Information</strong>
+                    </div>
+
+                    <div class="card-body row">
+
+                        <div class="col-md-6">
+                            <label>Registered Name</label>
+                            <input class="form-control" name="registered_name"
+                                t-att-value="current_partner.registered_name or ''" />
+
+                            <label class="mt-2">Trading Name</label>
+                            <input class="form-control" name="trading_name"
+                                t-att-value="current_partner.trading_name or ''" />
+
+                            <label class="mt-2">Affiliation Name</label>
+                            <input class="form-control" name="affiliation_name"
+                                t-att-value="current_partner.affiliation_name or ''" />
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label>CIPC Number</label>
+                            <input class="form-control" name="cipc_number"
+                                t-att-value="current_partner.cipc_number or ''" />
+
+                            <label class="mt-2">NCR Number</label>
+                            <input class="form-control" name="ncr_number"
+                                t-att-value="current_partner.ncr_number or ''" />
+
+                            <label class="mt-2">CASA Number</label>
+                            <input class="form-control" name="casa_number"
+                                t-att-value="current_partner.casa_number or ''" />
+
+                            <label class="mt-2">MFSA Number</label>
+                            <input class="form-control" name="mfsa_number"
+                                t-att-value="current_partner.mfsa_number or ''" />
+
+                            <label class="mt-2">Pastel Number</label>
+                            <input class="form-control" name="pastel_number"
+                                t-att-value="current_partner.pastel_number or ''" />
+
+                            <label class="mt-2">Branches</label>
+                            <input class="form-control" name="branches"
+                                t-att-value="current_partner.branches or ''" />
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <strong>Status</strong>
+                    </div>
+
+                    <div class="card-body row">
+
+                        <div class="col-md-3">
+                            <label>Member Status</label>
+                            <input class="form-control"
+                                name="member_status"
+                                t-att-value="current_partner.member_status or ''" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>Member Type</label>
+                            <input class="form-control"
+                                name="member_type"
+                                t-att-value="current_partner.member_type or ''" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>Internal Status</label>
+                            <input class="form-control"
+                                name="internal_status"
+                                t-att-value="current_partner.internal_status or ''" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label>NCR Status</label>
+                            <input class="form-control"
+                                name="ncr_status"
+                                t-att-value="current_partner.ncr_status or ''" />
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </t>
+
+            <!-- STAKEHOLDER -->
+            <t t-if="current_partner.entity_type == 'stakeholder'">
+
+                <div class="card mb-4">
+
+                    <div class="card-header">
+                        <strong>Business Information</strong>
+                    </div>
+
+                    <div class="card-body row">
+
+                        <div class="col-md-6">
+
+                            <label>Registered Name</label>
+                            <input class="form-control" name="registered_name"
+                                t-att-value="current_partner.registered_name or ''" />
+
+                            <label class="mt-2">Trading Name</label>
+                            <input class="form-control" name="trading_name"
+                                t-att-value="current_partner.trading_name or ''" />
+
+                            <label class="mt-2">CASA Number</label>
+                            <input class="form-control" name="casa_number"
+                                t-att-value="current_partner.casa_number or ''" />
+
+                            <label class="mt-2">VAT</label>
+                            <input class="form-control" name="vat"
+                                t-att-value="current_partner.vat or ''" />
+
+                            <label class="mt-2">Member Type</label>
+                            <input class="form-control" name="member_type"
+                                t-att-value="current_partner.member_type or ''" />
+
+                            <label class="mt-2">Business Size</label>
+                            <input class="form-control" name="business_size"
+                                t-att-value="current_partner.business_size or ''" />
+
+                            <label class="mt-2">Industry Involvement</label>
+                            <input class="form-control" name="industry_involvement"
+                                t-att-value="current_partner.industry_involvement or ''" />
+
+                            <label class="mt-2">Service Type</label>
+                            <input class="form-control" name="service_type"
+                                t-att-value="current_partner.service_type or ''" />
+
+                            <label class="mt-2">Member Status</label>
+                            <input class="form-control" name="member_status"
+                                t-att-value="current_partner.member_status or ''" />
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label>Building</label>
+                            <input class="form-control" name="building"
+                                t-att-value="current_partner.building or ''" />
+
+                            <label class="mt-2">Unit</label>
+                            <input class="form-control" name="unit"
+                                t-att-value="current_partner.unit or ''" />
+
+                            <label class="mt-2">Street</label>
+                            <input class="form-control" name="street"
+                                t-att-value="current_partner.street or ''" />
+
+                            <label class="mt-2">Suburb</label>
+                            <input class="form-control" name="suburb"
+                                t-att-value="current_partner.suburb or ''" />
+
+                            <label class="mt-2">City</label>
+                            <input class="form-control" name="city"
+                                t-att-value="current_partner.city or ''" />
+
+                            <label class="mt-2">Province</label>
+                            <input class="form-control" name="province"
+                                t-att-value="current_partner.province or ''" />
+
+                            <label class="mt-2">ZIP</label>
+                            <input class="form-control" name="zip"
+                                t-att-value="current_partner.zip or ''" />
+
+                            <label class="mt-2">Strategic Focus Areas</label>
+                            <input class="form-control" name="strategic_focus_areas"
+                                t-att-value="current_partner.strategic_focus_areas or ''" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </t>
+
+            <!-- SERVICE PROVIDER -->
+            <t t-if="current_partner.entity_type == 'service_provider'">
+
+                <div class="card mb-4">
+
+                    <div class="card-header">
+                        <strong>Business Information</strong>
+                    </div>
+
+                    <div class="card-body row">
+
+                        <div class="col-md-6">
+
+                            <label>Registered Name</label>
+                            <input class="form-control" name="registered_name"
+                                t-att-value="current_partner.registered_name or ''" />
+
+                            <label class="mt-2">Trading Name</label>
+                            <input class="form-control" name="trading_name"
+                                t-att-value="current_partner.trading_name or ''" />
+
+                            <label class="mt-2">CIPC Number</label>
+                            <input class="form-control" name="cipc_number"
+                                t-att-value="current_partner.cipc_number or ''" />
+
+                            <label class="mt-2">VAT</label>
+                            <input class="form-control" name="vat"
+                                t-att-value="current_partner.vat or ''" />
+
+                            <label class="mt-2">MFSA Number</label>
+                            <input class="form-control" name="mfsa_number"
+                                t-att-value="current_partner.mfsa_number or ''" />
+
+                            <label class="mt-2">Pastel Number</label>
+                            <input class="form-control" name="pastel_number"
+                                t-att-value="current_partner.pastel_number or ''" />
+
+                            <label class="mt-2">Member Type</label>
+                            <input class="form-control" name="member_type"
+                                t-att-value="current_partner.member_type or ''" />
+
+                            <label class="mt-2">Business Size</label>
+                            <input class="form-control" name="business_size"
+                                t-att-value="current_partner.business_size or ''" />
+
+                            <label class="mt-2">Industry Involvement</label>
+                            <input class="form-control" name="industry_involvement"
+                                t-att-value="current_partner.industry_involvement or ''" />
+
+                            <label class="mt-2">Service Type</label>
+                            <input class="form-control" name="service_type"
+                                t-att-value="current_partner.service_type or ''" />
+
+                            <label class="mt-2">Member Status</label>
+                            <input class="form-control" name="member_status"
+                                t-att-value="current_partner.member_status or ''" />
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label>Building</label>
+                            <input class="form-control" name="building"
+                                t-att-value="current_partner.building or ''" />
+
+                            <label class="mt-2">Unit</label>
+                            <input class="form-control" name="unit"
+                                t-att-value="current_partner.unit or ''" />
+
+                            <label class="mt-2">Street</label>
+                            <input class="form-control" name="street"
+                                t-att-value="current_partner.street or ''" />
+
+                            <label class="mt-2">Suburb</label>
+                            <input class="form-control" name="suburb"
+                                t-att-value="current_partner.suburb or ''" />
+
+                            <label class="mt-2">City</label>
+                            <input class="form-control" name="city"
+                                t-att-value="current_partner.city or ''" />
+
+                            <label class="mt-2">Province</label>
+                            <input class="form-control" name="province"
+                                t-att-value="current_partner.province or ''" />
+
+                            <label class="mt-2">ZIP</label>
+                            <input class="form-control" name="zip"
+                                t-att-value="current_partner.zip or ''" />
+
+                            <label class="mt-2">Contact Person</label>
+                            <input class="form-control" name="contact_person"
+                                t-att-value="current_partner.contact_person or ''" />
+
+                            <label class="mt-2">Phone</label>
+                            <input class="form-control" name="phone"
+                                t-att-value="current_partner.phone or ''" />
+
+                            <label class="mt-2">Email</label>
+                            <input class="form-control" name="email"
+                                t-att-value="current_partner.email or ''" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </t>
+
+            <!-- BRANCH -->
+            <t t-if="current_partner.entity_type == 'branch'">
+
+                <div class="card mb-4">
+
+                    <div class="card-header">
+                        <strong>Branch Details</strong>
+                    </div>
+
+                    <div class="card-body row">
+
+                        <div class="col-md-6">
+
+                            <label>Trading Name</label>
+                            <input class="form-control" name="trading_name"
+                                t-att-value="current_partner.trading_name or ''" />
+
+                            <label class="mt-2">MFSA Number</label>
+                            <input class="form-control" name="mfsa_number"
+                                t-att-value="current_partner.mfsa_number or ''" />
+
+                            <label class="mt-2">Pastel Number</label>
+                            <input class="form-control" name="pastel_number"
+                                t-att-value="current_partner.pastel_number or ''" />
+
+                            <label class="mt-2">Office Contact Number</label>
+                            <input class="form-control" name="office_contact_number"
+                                t-att-value="current_partner.office_contact_number or ''" />
+
+                            <label class="mt-2">Internal Status</label>
+                            <input class="form-control" name="internal_status"
+                                t-att-value="current_partner.internal_status or ''" />
+
+                            <label class="mt-2">NCR Status</label>
+                            <input class="form-control" name="ncr_status"
+                                t-att-value="current_partner.ncr_status or ''" />
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label>Building</label>
+                            <input class="form-control" name="building"
+                                t-att-value="current_partner.building or ''" />
+
+                            <label class="mt-2">Unit</label>
+                            <input class="form-control" name="unit"
+                                t-att-value="current_partner.unit or ''" />
+
+                            <label class="mt-2">Street</label>
+                            <input class="form-control" name="street"
+                                t-att-value="current_partner.street or ''" />
+
+                            <label class="mt-2">Suburb</label>
+                            <input class="form-control" name="suburb"
+                                t-att-value="current_partner.suburb or ''" />
+
+                            <label class="mt-2">City</label>
+                            <input class="form-control" name="city"
+                                t-att-value="current_partner.city or ''" />
+
+                            <label class="mt-2">Province</label>
+                            <input class="form-control" name="province"
+                                t-att-value="current_partner.province or ''" />
+
+                            <label class="mt-2">ZIP</label>
+                            <input class="form-control" name="zip"
+                                t-att-value="current_partner.zip or ''" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </t>
+
+            <!-- AFFILIATION -->
+            <t t-if="current_partner.entity_type == 'affiliation'">
+
+                <div class="card mb-4">
+
+                    <div class="card-header">
+                        <strong>Affiliation Details</strong>
+                    </div>
+
+                    <div class="card-body row">
+
+                        <div class="col-md-6">
+
+                            <label>Affiliation Name</label>
+                            <input class="form-control" name="affiliation_name"
+                                t-att-value="current_partner.affiliation_name or ''" />
+
+                            <label class="mt-2">Registered Name</label>
+                            <input class="form-control" name="registered_name"
+                                t-att-value="current_partner.registered_name or ''" />
+
+                            <label class="mt-2">CIPC Number</label>
+                            <input class="form-control" name="cipc_number"
+                                t-att-value="current_partner.cipc_number or ''" />
+
+                            <label class="mt-2">VAT</label>
+                            <input class="form-control" name="vat"
+                                t-att-value="current_partner.vat or ''" />
+
+                            <label class="mt-2">Branch Number</label>
+                            <input class="form-control" name="branch_number"
+                                t-att-value="current_partner.branch_number or ''" />
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label>Contact Person</label>
+                            <input class="form-control" name="contact_person"
+                                t-att-value="current_partner.contact_person or ''" />
+
+                            <label class="mt-2">Phone</label>
+                            <input class="form-control" name="phone"
+                                t-att-value="current_partner.phone or ''" />
+
+                            <label class="mt-2">Email</label>
+                            <input class="form-control" name="email"
+                                t-att-value="current_partner.email or ''" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <strong>Head Office Information</strong>
+                    </div>
+
+                    <div class="card-body row">
+
+                        <div class="col-md-6">
+
+                            <label>Building</label>
+                            <input class="form-control" name="building"
+                                t-att-value="current_partner.building or ''" />
+
+                            <label class="mt-2">Unit</label>
+                            <input class="form-control" name="unit"
+                                t-att-value="current_partner.unit or ''" />
+
+                            <label class="mt-2">Street</label>
+                            <input class="form-control" name="street"
+                                t-att-value="current_partner.street or ''" />
+
+                            <label class="mt-2">Suburb</label>
+                            <input class="form-control" name="suburb"
+                                t-att-value="current_partner.suburb or ''" />
+
+                            <label class="mt-2">City</label>
+                            <input class="form-control" name="city"
+                                t-att-value="current_partner.city or ''" />
+
+                            <label class="mt-2">Province</label>
+                            <input class="form-control" name="province"
+                                t-att-value="current_partner.province or ''" />
+
+                            <label class="mt-2">ZIP</label>
+                            <input class="form-control" name="zip"
+                                t-att-value="current_partner.zip or ''" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </t>
+
+            <!-- CONTACT -->
+            <t t-if="current_partner.entity_type == 'contact'">
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <strong>Contact Details</strong>
+                    </div>
+
+                    <div class="card-body row">
+
+                        <div class="col-md-6">
+
+                            <label>Name</label>
+                            <input class="form-control" name="name"
+                                t-att-value="current_partner.name or ''" />
+
+                            <label class="mt-2">Job Description</label>
+                            <input class="form-control" name="job_description"
+                                t-att-value="current_partner.job_description or ''" />
+
+                            <label class="mt-2">Office Number</label>
+                            <input class="form-control" name="office_number"
+                                t-att-value="current_partner.office_number or ''" />
+
+                            <label class="mt-2">Office Contact Number</label>
+                            <input class="form-control" name="office_contact_number"
+                                t-att-value="current_partner.office_contact_number or ''" />
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label>Phone</label>
+                            <input class="form-control" name="phone"
+                                t-att-value="current_partner.phone or ''" />
+
+                            <label class="mt-2">Email</label>
+                            <input class="form-control" name="email"
+                                t-att-value="current_partner.email or ''" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </t>
+
+        </xpath>
+
+    </template>
+
+</odoo>

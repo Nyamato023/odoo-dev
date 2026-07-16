@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_casa_member_application_list" model="ir.ui.view">
+        <field name="name">casa.member.application.list</field>
+        <field name="model">casa.member.application</field>
+        <field name="arch" type="xml">
+            <list decoration-info="state == 'received'" decoration-warning="state == 'review'" decoration-success="state == 'approved'" decoration-muted="state == 'declined'">
+                <field name="reference"/>
+                <field name="create_date"/>
+                <field name="trading_name"/>
+                <field name="contact_name"/>
+                <field name="email"/>
+                <field name="cipc_registration_no"/>
+                <field name="ncr_registration_no"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+    <record id="view_casa_member_application_search" model="ir.ui.view">
+        <field name="name">casa.member.application.search</field>
+        <field name="model">casa.member.application</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="reference"/>
+                <field name="trading_name"/>
+                <field name="email"/>
+                <field name="cipc_registration_no"/>
+                <field name="ncr_registration_no"/>
+                <filter string="Received" name="received" domain="[('state', '=', 'received')]"/>
+                <filter string="Under Review" name="review" domain="[('state', '=', 'review')]"/>
+                <filter string="Possible Duplicates" name="duplicates" domain="[('duplicate_warning', '!=', False)]"/>
+                <group><filter string="Status" name="group_state" context="{'group_by': 'state'}"/></group>
+            </search>
+        </field>
+    </record>
+    <record id="view_casa_member_application_form" model="ir.ui.view">
+        <field name="name">casa.member.application.form</field>
+        <field name="model">casa.member.application</field>
+        <field name="arch" type="xml">
+            <form string="New Member Application">
+                <header>
+                    <button name="action_start_review" string="Start Review" type="object" class="btn-primary" invisible="state != 'received'"/>
+                    <button name="action_approve" string="Approve" type="object" class="btn-primary" invisible="state not in ('received', 'review')" confirm="This creates the member, branch and portal records. Continue?"/>
+                    <button name="action_decline" string="Decline" type="object" invisible="state not in ('received', 'review')" confirm="Decline this application and email the reason?"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,received,review,approved,declined"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="action_start_review" icon="fa-search" invisible="state != 'received'"><div class="o_stat_info"><span class="o_stat_text">Review</span></div></button>
+                    </div>
+                    <widget name="web_ribbon" title="Possible duplicate" bg_color="text-bg-warning" invisible="not duplicate_warning"/>
+                    <div class="oe_title"><label for="reference"/><h1><field name="reference"/></h1><h2><field name="trading_name"/></h2></div>
+                    <group>
+                        <group><field name="applicant_type"/><field name="registered_name"/><field name="trading_name"/><field name="cipc_registration_no"/><field name="contact_name"/><field name="email" widget="email"/><field name="cell" widget="phone"/></group>
+                        <group><field name="ncr_registration_no"/><field name="ncr_status"/><field name="nlr_registration_no"/><field name="vat_number"/><field name="lead_id"/><field name="entity_partner_id"/><field name="approved_date"/></group>
+                    </group>
+                    <notebook>
+                        <page string="Address"><group><group><field name="street2"/><field name="street"/><field name="suburb"/><field name="city"/></group><group><field name="state_id"/><field name="zip"/><field name="phone"/><field name="website"/></group></group></page>
+                        <page string="Branches" invisible="applicant_type != 'with_branches'"><group><field name="branch_count"/><field name="provide_branches_later"/></group><field name="branch_ids"><list editable="bottom"><field name="sequence" widget="handle"/><field name="trading_name"/><field name="contact_name"/><field name="email"/><field name="phone"/><field name="city"/><field name="state_id"/></list></field></page>
+                        <page string="Membership &amp; Documents"><group><group><field name="affiliation_option"/><field name="affiliation_id" invisible="affiliation_option != 'existing'"/><field name="affiliation_other" invisible="affiliation_option != 'other'"/><field name="pastel_account_number" required="state in ('received', 'review')"/></group><group><field name="cipc_attachment_id"/><field name="ncr_attachment_id"/><field name="id_attachment_id"/><field name="popia_consent"/><field name="declaration_accepted"/><field name="signature_name"/></group></group><separator string="Approval Welcome Pack"/><group><field name="payment_terms_note" required="state in ('received', 'review')"/><group><field name="invoice_attachment_id" required="state in ('received', 'review')"/><field name="certificate_attachment_id" required="state in ('received', 'review')"/></group></group></page>
+                        <page string="Vetting"><group><field name="duplicate_warning" placeholder="No possible duplicates found."/><field name="decline_reason" placeholder="Required before declining."/></group></page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+    <record id="action_casa_member_application" model="ir.actions.act_window">
+        <field name="name">New Member Applications</field>
+        <field name="res_model">casa.member.application</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_casa_member_application_search"/>
+    </record>
+    <menuitem id="menu_casa_membership_root" name="CASA Membership" sequence="60" groups="casa_member_application.group_casa_membership_officer"/>
+    <menuitem id="menu_casa_member_applications" name="New Member Applications" parent="menu_casa_membership_root" action="action_casa_member_application" sequence="10"/>
+</odoo>

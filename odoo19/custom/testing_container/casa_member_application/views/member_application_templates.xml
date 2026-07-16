@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="member_application_progress" name="Member Application Progress">
+        <div class="casa-progress mb-4" role="navigation" aria-label="Application progress">
+            <t
+                t-foreach="[(1, 'Who are you?'), (2, 'Regulatory'), (3, 'Address'), (4, 'Branches'), (5, 'Membership'), (6, 'Summary')]"
+                t-as="step">
+                <span
+                    t-attf-class="casa-progress-step #{'active' if current_page == step[0] else ('done' if current_page &gt; step[0] else '')}">
+                    <span class="casa-progress-number" t-out="step[0]" />
+                    <span class="casa-progress-label" t-out="step[1]" />
+                </span>
+            </t>
+        </div>
+    </template>
+    <template id="member_application_errors" name="Member Application Errors">
+        <div t-if="errors" class="alert alert-danger" role="alert">
+            <p class="fw-bold mb-1">Please correct the following:</p>
+            <ul class="mb-0">
+                <li t-foreach="errors" t-as="error" t-out="error" />
+            </ul>
+        </div>
+    </template>
+    <template id="member_application_page_1" name="CASA New Member Application">
+        <t t-call="website.layout">
+            <div id="wrap" class="casa-member-application py-5">
+                <div class="container casa-form-container">
+                    <h1>New member application</h1>
+                    <p class="lead">Start without an account. We will verify your email and send a
+                        private resume link.</p>
+                    <t t-call="casa_member_application.member_application_progress">
+                        <t t-set="current_page" t-value="1" />
+                    </t>
+                    <t t-call="casa_member_application.member_application_errors" />
+                    <form
+                        t-att-action="('/new-member/%s/page/1' % application.access_token) if edit_mode else '/new-member/start'"
+                        method="post" class="card card-body shadow-sm">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                        <div class="mb-3">
+                            <label class="form-label" for="email">Email address *</label>
+                            <input id="email" name="email" type="email" class="form-control"
+                                required="required" autocomplete="email" t-att-readonly="edit_mode"
+                                t-att-value="posted.get('email', '')" />
+                            <div class="form-text">We use this for verification, save and resume.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="applicant_type">Applicant type *</label>
+                            <select id="applicant_type" name="applicant_type" class="form-select"
+                                required="required">
+                                <option value="">Select...</option>
+                                <option value="with_branches"
+                                    t-att-selected="posted.get('applicant_type') == 'with_branches'">Head
+                                    office / affiliation with branches</option>
+                                <option value="standalone"
+                                    t-att-selected="posted.get('applicant_type') == 'standalone'">Standalone
+                                    / single-location lender (no branches)</option>
+                            </select>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="registered_name">Registered name *</label>
+                                <input id="registered_name" name="registered_name"
+                                    class="form-control" required="required"
+                                    t-att-value="posted.get('registered_name', '')" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="trading_name">Trading name *</label>
+                                <input id="trading_name" name="trading_name" class="form-control"
+                                    required="required" t-att-value="posted.get('trading_name', '')" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="cipc_registration_no">CIPC
+                                    registration no. *</label>
+                                <input id="cipc_registration_no" name="cipc_registration_no"
+                                    class="form-control" required="required"
+                                    placeholder="yyyy/nnnnnn/nn" pattern="\d{4}/\d{6}/\d{2}"
+                                    t-att-value="posted.get('cipc_registration_no', '')" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="contact_name">Contact person *</label>
+                                <input id="contact_name" name="contact_name" class="form-control"
+                                    required="required" autocomplete="name"
+                                    t-att-value="posted.get('contact_name', '')" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="cell">Cell number *</label>
+                                <input id="cell" name="cell" type="tel" class="form-control"
+                                    required="required" autocomplete="tel"
+                                    t-att-value="posted.get('cell', '')" />
+                            </div>
+                        </div>
+                        <div class="mt-4 text-end">
+                            <button type="submit" class="btn btn-primary btn-lg"
+                                t-out="'Save and return to summary' if edit_mode else 'Email verification code'" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="member_application_verify" name="Verify CASA Application">
+        <t t-call="website.layout">
+            <div id="wrap" class="casa-member-application py-5">
+                <div class="container casa-form-container">
+                    <h1>Verify your email</h1>
+                    <p>We sent a six-digit code to <strong t-out="application.email" />.</p>
+                    <t t-call="casa_member_application.member_application_errors" />
+                    <form t-att-action="'/new-member/verify/%s' % application.access_token"
+                        method="post" class="card card-body shadow-sm">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                        <label class="form-label" for="otp">Verification code</label>
+                        <input id="otp" name="otp" class="form-control form-control-lg"
+                            inputmode="numeric" pattern="\d{6}" maxlength="6"
+                            autocomplete="one-time-code" />
+                        <div class="mt-3 d-flex gap-2">
+                            <button class="btn btn-primary" type="submit">Verify and continue</button>
+                            <button class="btn btn-link" type="submit" name="resend" value="1">Send
+                                a new code</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="member_application_page_2" name="CASA Application Regulatory Information">
+        <t t-call="website.layout">
+            <div id="wrap" class="casa-member-application py-5">
+                <div class="container casa-form-container">
+                    <h1>Regulatory information</h1>
+                    <t t-call="casa_member_application.member_application_progress">
+                        <t t-set="current_page" t-value="2" />
+                    </t>
+                    <t t-call="casa_member_application.member_application_errors" />
+                    <form t-att-action="'/new-member/%s/page/2' % application.access_token"
+                        method="post" class="card card-body shadow-sm">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">NCR registration no. *</label>
+                                <input name="ncr_registration_no" class="form-control"
+                                    required="required" placeholder="NCRCP12345"
+                                    t-att-value="application.ncr_registration_no or ''" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">NCR status *</label>
+                                <select name="ncr_status" class="form-select" required="required">
+                                    <option value="">Select...</option>
+                                    <option
+                                        t-foreach="[('active','Active'),('pending','Pending'),('suspended','Suspended'),('cancelled','Cancelled')]"
+                                        t-as="item" t-att-value="item[0]"
+                                        t-att-selected="application.ncr_status == item[0]"
+                                        t-out="item[1]" />
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">NLR / other registration</label>
+                                <input name="nlr_registration_no" class="form-control"
+                                    t-att-value="application.nlr_registration_no or ''" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">VAT number</label>
+                                <input name="vat_number" class="form-control" inputmode="numeric"
+                                    pattern="\d{10}" maxlength="10"
+                                    t-att-value="application.vat_number or ''" />
+                            </div>
+                        </div>
+                        <div class="mt-4 text-end">
+                            <button class="btn btn-primary" type="submit">Save and continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="member_application_page_3" name="CASA Application Address">
+        <t t-call="website.layout">
+            <div id="wrap" class="casa-member-application py-5">
+                <div class="container casa-form-container">
+                    <h1>Head office address and contact</h1>
+                    <t t-call="casa_member_application.member_application_progress">
+                        <t t-set="current_page" t-value="3" />
+                    </t>
+                    <t t-call="casa_member_application.member_application_errors" />
+                    <form t-att-action="'/new-member/%s/page/3' % application.access_token"
+                        method="post" class="card card-body shadow-sm">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Unit / building</label>
+                                <input name="street2" class="form-control"
+                                    t-att-value="application.street2 or ''" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Street *</label>
+                                <input name="street" class="form-control" required="required"
+                                    t-att-value="application.street or ''" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Suburb *</label>
+                                <input name="suburb" class="form-control" required="required"
+                                    t-att-value="application.suburb or ''" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">City *</label>
+                                <input name="city" class="form-control" required="required"
+                                    t-att-value="application.city or ''" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Province *</label>
+                                <select name="state_id" class="form-select" required="required">
+                                    <option value="">Select...</option>
+                                    <option t-foreach="states" t-as="province"
+                                        t-att-value="province.id"
+                                        t-att-selected="application.state_id == province"
+                                        t-out="province.name" />
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Postal code *</label>
+                                <input name="zip" class="form-control" required="required"
+                                    inputmode="numeric" pattern="\d{4}" maxlength="4"
+                                    t-att-value="application.zip or ''" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Office phone *</label>
+                                <input name="phone" type="tel" class="form-control"
+                                    required="required" t-att-value="application.phone or ''" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Website</label>
+                                <input name="website" type="url" class="form-control"
+                                    placeholder="https://" t-att-value="application.website or ''" />
+                            </div>
+                        </div>
+                        <div class="mt-4 text-end">
+                            <button class="btn btn-primary" type="submit">Save and continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="member_application_page_4" name="CASA Application Branches">
+        <t t-call="website.layout">
+            <div id="wrap" class="casa-member-application py-5">
+                <div class="container casa-form-container">
+                    <h1>Branches</h1>
+                    <t t-call="casa_member_application.member_application_progress">
+                        <t t-set="current_page" t-value="4" />
+                    </t>
+                    <t t-call="casa_member_application.member_application_errors" />
+                    <form t-att-action="'/new-member/%s/page/4' % application.access_token"
+                        method="post" class="card card-body shadow-sm casa-branches-form"
+                        t-att-data-head-street="application.street"
+                        t-att-data-head-street2="application.street2"
+                        t-att-data-head-city="application.city"
+                        t-att-data-head-state="application.state_id.id"
+                        t-att-data-head-zip="application.zip">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                        <div class="row align-items-end g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">How many branches? *</label>
+                                <input id="branch_count" name="branch_count" type="number" min="1"
+                                    max="100" class="form-control" required="required"
+                                    t-att-value="branch_count" />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-check">
+                                    <input id="provide_branches_later" name="provide_branches_later"
+                                        value="1" type="checkbox" class="form-check-input"
+                                        t-att-checked="application.provide_branches_later" />
+                                    <label for="provide_branches_later" class="form-check-label">I
+                                        will provide branch details later (Form B will be sent after
+                                        approval)</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="branch_blocks" class="mt-4">
+                            <t t-foreach="range(branch_count)" t-as="index">
+                                <t t-set="branch"
+                                    t-value="application.branch_ids[index] if index &lt; len(application.branch_ids) else False" />
+                                <section class="casa-branch-block border rounded p-3 mb-3">
+                                    <div class="d-flex justify-content-between">
+                                        <h2 class="h5">Branch <span t-out="index + 1" /></h2>
+                                        <button type="button"
+                                            class="btn btn-sm btn-outline-secondary casa-copy-head-office">Copy
+                                            head office address</button>
+                                    </div>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Trading name *</label>
+                                            <input t-att-name="'branch_%s_trading_name' % index"
+                                                class="form-control" required="required"
+                                                t-att-value="branch.trading_name if branch else ''" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Contact person *</label>
+                                            <input t-att-name="'branch_%s_contact_name' % index"
+                                                class="form-control" required="required"
+                                                t-att-value="branch.contact_name if branch else ''" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email</label>
+                                            <input t-att-name="'branch_%s_email' % index"
+                                                type="email" class="form-control"
+                                                t-att-value="branch.email if branch else ''" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Phone *</label>
+                                            <input t-att-name="'branch_%s_phone' % index" type="tel"
+                                                class="form-control" required="required"
+                                                t-att-value="branch.phone if branch else ''" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Street *</label>
+                                            <input t-att-name="'branch_%s_street' % index"
+                                                class="form-control" required="required"
+                                                t-att-value="branch.street if branch else ''" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Unit / building</label>
+                                            <input t-att-name="'branch_%s_street2' % index"
+                                                class="form-control"
+                                                t-att-value="branch.street2 if branch else ''" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">City *</label>
+                                            <input t-att-name="'branch_%s_city' % index"
+                                                class="form-control" required="required"
+                                                t-att-value="branch.city if branch else ''" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Province *</label>
+                                            <select t-att-name="'branch_%s_state_id' % index"
+                                                class="form-select" required="required">
+                                                <option value="">Select...</option>
+                                                <option t-foreach="states" t-as="province"
+                                                    t-att-value="province.id"
+                                                    t-att-selected="branch and branch.state_id == province"
+                                                    t-out="province.name" />
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Postal code *</label>
+                                            <input t-att-name="'branch_%s_zip' % index"
+                                                class="form-control" required="required"
+                                                pattern="\d{4}" maxlength="4"
+                                                t-att-value="branch.zip if branch else ''" />
+                                        </div>
+                                    </div>
+                                </section>
+                            </t>
+                        </div>
+                        <div class="text-end">
+                            <button class="btn btn-primary" type="submit">Save and continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="member_application_page_5" name="CASA Application Membership and Declaration">
+        <t t-call="website.layout">
+            <div id="wrap" class="casa-member-application py-5">
+                <div class="container casa-form-container">
+                    <h1>Membership and declaration</h1>
+                    <t t-call="casa_member_application.member_application_progress">
+                        <t t-set="current_page" t-value="5" />
+                    </t>
+                    <t t-call="casa_member_application.member_application_errors" />
+                    <form t-att-action="'/new-member/%s/page/5' % application.access_token"
+                        method="post" enctype="multipart/form-data" class="card card-body shadow-sm">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                        <div class="mb-3">
+                            <label class="form-label">Membership type / affiliation *</label>
+                            <select id="affiliation_option" name="affiliation_option"
+                                class="form-select" required="required">
+                                <option value="existing"
+                                    t-att-selected="application.affiliation_option == 'existing'">Existing
+                                    affiliate</option>
+                                <option value="other"
+                                    t-att-selected="application.affiliation_option == 'other'">Other</option>
+                                <option value="none"
+                                    t-att-selected="application.affiliation_option == 'none'">None</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 casa-affiliation-existing">
+                            <label class="form-label">Affiliate</label>
+                            <select name="affiliation_id" class="form-select">
+                                <option value="">Select...</option>
+                                <option t-foreach="affiliates" t-as="affiliate"
+                                    t-att-value="affiliate.id"
+                                    t-att-selected="application.affiliation_id == affiliate"
+                                    t-out="affiliate.name" />
+                            </select>
+                        </div>
+                        <div class="mb-3 casa-affiliation-other">
+                            <label class="form-label">Other affiliation</label>
+                            <input name="affiliation_other" class="form-control"
+                                t-att-value="application.affiliation_other or ''" />
+                        </div>
+                        <h2 class="h5 mt-3">Supporting documents</h2>
+                        <p class="text-muted">PDF, JPG, PNG or supported phone photo; maximum 10 MB
+                            each.</p>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">CIPC certificate *</label>
+                                <input name="cipc_document" type="file" class="form-control"
+                                    accept="application/pdf,image/jpeg,image/png,image/heic,image/heif"
+                                    t-att-required="not application.cipc_attachment_id" />
+                                <small t-if="application.cipc_attachment_id" class="text-success">
+                                    Uploaded: <t t-out="application.cipc_attachment_id.name" /></small>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">NCR certificate *</label>
+                                <input name="ncr_document" type="file" class="form-control"
+                                    accept="application/pdf,image/jpeg,image/png,image/heic,image/heif"
+                                    t-att-required="not application.ncr_attachment_id" />
+                                <small t-if="application.ncr_attachment_id" class="text-success">
+                                    Uploaded: <t t-out="application.ncr_attachment_id.name" /></small>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Identity document *</label>
+                                <input name="id_document" type="file" class="form-control"
+                                    accept="application/pdf,image/jpeg,image/png,image/heic,image/heif"
+                                    t-att-required="not application.id_attachment_id" />
+                                <small t-if="application.id_attachment_id" class="text-success">
+                                    Uploaded: <t t-out="application.id_attachment_id.name" /></small>
+                            </div>
+                        </div>
+                        <hr class="my-4" />
+                        <div class="form-check mb-2">
+                            <input id="popia_consent" name="popia_consent" value="1" type="checkbox"
+                                class="form-check-input" required="required"
+                                t-att-checked="application.popia_consent" />
+                            <label for="popia_consent" class="form-check-label">I consent to CASA
+                                processing this information for membership vetting and
+                                administration.</label>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input id="declaration_accepted" name="declaration_accepted" value="1"
+                                type="checkbox" class="form-check-input" required="required"
+                                t-att-checked="application.declaration_accepted" />
+                            <label for="declaration_accepted" class="form-check-label">I declare
+                                that the information supplied is true and complete.</label>
+                        </div>
+                        <label class="form-label">Type your full name as signature *</label>
+                        <input name="signature_name" class="form-control" required="required"
+                            t-att-value="application.signature_name or ''" />
+                        <div class="mt-4 text-end">
+                            <button class="btn btn-primary" type="submit">Save and review</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="member_application_page_6" name="CASA Application Summary">
+        <t t-call="website.layout">
+            <div id="wrap" class="casa-member-application py-5">
+                <div class="container casa-form-container">
+                    <h1>Review and submit</h1>
+                    <t t-call="casa_member_application.member_application_progress">
+                        <t t-set="current_page" t-value="6" />
+                    </t>
+                    <t t-call="casa_member_application.member_application_errors" />
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <section>
+                                <div class="d-flex justify-content-between">
+                                    <h2 class="h5">Applicant</h2>
+                                    <a
+                                        t-att-href="'/new-member/%s/page/1' % application.access_token">
+                                        Edit</a>
+                                </div>
+                                <dl class="row">
+                                    <dt class="col-sm-4">Type</dt>
+                                    <dd class="col-sm-8"
+                                        t-out="dict(application._fields['applicant_type'].selection).get(application.applicant_type)" />
+                                    <dt class="col-sm-4">Registered / trading name</dt>
+                                    <dd class="col-sm-8"><t t-out="application.registered_name" /> / <t
+                                            t-out="application.trading_name" /></dd>
+                                    <dt class="col-sm-4">CIPC</dt>
+                                    <dd class="col-sm-8" t-out="application.cipc_registration_no" />
+                                    <dt class="col-sm-4">Contact</dt>
+                                    <dd class="col-sm-8"><t t-out="application.contact_name" /> — <t
+                                            t-out="application.email" /> — <t
+                                            t-out="application.cell" /></dd>
+                                </dl>
+                            </section>
+                            <section>
+                                <div class="d-flex justify-content-between">
+                                    <h2 class="h5">Regulatory</h2>
+                                    <a
+                                        t-att-href="'/new-member/%s/page/2' % application.access_token">
+                                        Edit</a>
+                                </div>
+                                <p>NCR: <t t-out="application.ncr_registration_no" /> (<t
+                                        t-out="application.ncr_status" />)</p>
+                            </section>
+                            <section>
+                                <div class="d-flex justify-content-between">
+                                    <h2 class="h5">Address</h2>
+                                    <a
+                                        t-att-href="'/new-member/%s/page/3' % application.access_token">
+                                        Edit</a>
+                                </div>
+                                <p><t t-out="application.street2" /> <t t-out="application.street" />
+                                    , <t t-out="application.suburb" />, <t t-out="application.city" />
+                                    , <t t-out="application.state_id.name" /> <t
+                                        t-out="application.zip" /></p>
+                            </section>
+                            <section t-if="application.applicant_type == 'with_branches'">
+                                <div class="d-flex justify-content-between">
+                                    <h2 class="h5">Branches</h2>
+                                    <a
+                                        t-att-href="'/new-member/%s/page/4' % application.access_token">
+                                        Edit</a>
+                                </div>
+                                <p t-if="application.provide_branches_later">Branch details will be
+                                    provided later.</p>
+                                <ul t-else="">
+                                    <li t-foreach="application.branch_ids" t-as="branch"><t
+                                            t-out="branch.trading_name" /> — <t t-out="branch.city" /></li>
+                                </ul>
+                            </section>
+                            <section>
+                                <div class="d-flex justify-content-between">
+                                    <h2 class="h5">Membership and declaration</h2>
+                                    <a
+                                        t-att-href="'/new-member/%s/page/5' % application.access_token">
+                                        Edit</a>
+                                </div>
+                                <p>Signed by <strong t-out="application.signature_name" />. All
+                                    three supporting documents are attached.</p>
+                            </section>
+                            <form t-att-action="'/new-member/%s/page/6' % application.access_token"
+                                method="post" class="text-end">
+                                <input type="hidden" name="csrf_token"
+                                    t-att-value="request.csrf_token()" />
+                                <button class="btn btn-primary btn-lg" type="submit">Submit
+                                    application</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="member_application_complete" name="CASA Application Status">
+        <t t-call="website.layout">
+            <div id="wrap" class="casa-member-application py-5">
+                <div class="container casa-form-container text-center">
+                    <div class="card card-body shadow-sm">
+                        <h1>Application <t t-out="application.reference" /></h1>
+                        <p class="lead">Status: <strong
+                                t-out="dict(application._fields['state'].selection).get(application.state)" /></p>
+                        <p t-if="application.state == 'received'">Your application has been
+                            received. A confirmation was emailed to you.</p>
+                        <p t-if="application.state == 'review'">The CASA team is reviewing your
+                            application.</p>
+                        <p t-if="application.state == 'approved'">Welcome to CASA. Your membership
+                            numbers and portal invitation have been emailed to you.</p>
+                        <p t-if="application.state == 'declined'">The decision and reason have been
+                            emailed to you.</p>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

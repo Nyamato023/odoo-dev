@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_casa_membership" model="ir.ui.view">
+        <field name="name">res.partner.form.casa.membership</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="CASA Membership" name="casa_membership">
+                    <group>
+                        <group>
+                            <field name="membership_record_type"/>
+                            <field name="legal_registered_name"/>
+                            <field name="member_contact_name"/>
+                            <field name="member_suburb"/>
+                            <field name="member_cell"/>
+                            <field name="casa_member_number"/>
+                            <field name="mfsa_member_number"/>
+                            <field name="pastel_account_number"/>
+                        </group>
+                        <group>
+                            <field name="cipc_registration_no"/>
+                            <field name="ncr_registration_no"/>
+                            <field name="ncr_status"/>
+                            <field name="nlr_registration_no"/>
+                            <field name="date_last_member_update"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

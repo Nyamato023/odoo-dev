@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ap_view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.member.pages</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='category_id']" position="after">
+
+                <field name="entity_type"
+                    widget="radio"
+                    options="{'horizontal': true}" />
+
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+
+                <!-- ================================================= -->
+                <!-- MEMBER -->
+                <!-- ================================================= -->
+
+                <page string="Member" invisible="entity_type != 'member'">
+
+                    <group string="General Information">
+                        <group>
+                            <field name="registered_name" />
+                            <field name="trading_name" />
+                            <field name="affiliation_name" />
+                            <field name="entity_type" />
+                        </group>
+
+                        <group>
+                            <field name="cipc_number" />
+
+                            <field name="ncr_number" />
+                            <field name="casa_number" />
+                            <field name="mfsa_number" />
+                            <field name="pastel_number" />
+                            <field name="branches" />
+                        </group>
+                    </group>
+
+                    <group string="Status">
+                        <group>
+                            <field name="member_status" />
+                            <field name="member_type" />
+                            <field name="internal_status" />
+                            <field name="ncr_status" />
+                        </group>
+                    </group>
+
+                </page>
+
+                <!-- ================================================= -->
+                <!-- STAKEHOLDER -->
+                <!-- ================================================= -->
+
+                <page string="Stakeholder" invisible="entity_type != 'stakeholder'">
+
+                    <group>
+
+                        <group>
+                            <field name="registered_name" />
+                            <field name="trading_name" />
+                            <field name="casa_number" />
+                            <field name="vat" />
+                            <field name="member_type" />
+                            <field name="business_size" />
+                            <field name="industry_involvement" />
+                            <field name="service_type" />
+                            <field name="member_status" />
+
+                        </group>
+
+                        <group>
+                            <field name="building" />
+                            <field name="unit" />
+                            <field name="street" />
+                            <field name="suburb" />
+                            <field name="city" />
+                            <field name="province" />
+                            <field name="zip" />
+                            <field name="focus_areas" string="Strategic Focus Areas" />
+                        </group>
+
+                    </group>
+
+                </page>
+
+                <!-- ================================================= -->
+                <!-- SERVICE PROVIDER -->
+                <!-- ================================================= -->
+
+                <page string="Service Provider" invisible="entity_type != 'service_provider'">
+
+                    <group>
+
+                        <group>
+                            <field name="registered_name" />
+                            <field name="trading_name" />
+                            <field name="cipc_number" />
+                            <field name="vat" />
+                            <field name="mfsa_number" />
+                            <field name="pastel_number" />
+                            <field name="building" />
+                            <field name="unit" />
+                            <field name="street" />
+                            <field name="suburb" />
+                            <field name="city" />
+                            <field name="province" />
+                            <field name="zip" />
+                            <field name="member_type" />
+                            <field name="business_size" />
+                            <field name="industry_involvement" />
+                            <field name="service_type" />
+                            <field name="member_status" />
+                        </group>
+
+                        <group>
+                            <field name="contact_person" />
+                            <field name="phone" />
+                            <field name="email" />
+                        </group>
+
+                    </group>
+
+                </page>
+
+                <!-- ================================================= -->
+                <!-- BRANCH -->
+                <!-- ================================================= -->
+
+                <page string="Branch" invisible="entity_type != 'branch'">
+
+                    <group>
+
+                        <group>
+                            <field name="trading_name" />
+
+                            <field name="mfsa_number" />
+                            <field name="pastel_number" />
+                            <field name="office_contact_number" />
+                            <field name="internal_status" />
+                            <field name="ncr_status" />
+                        </group>
+
+                        <group>
+                            <field name="building" />
+                            <field name="unit" />
+                            <field name="street" />
+                            <field name="suburb" />
+                            <field name="city" />
+                            <field name="province" />
+                            <field name="zip" />
+                        </group>
+
+                    </group>
+
+                </page>
+
+                <!-- ================================================= -->
+                <!-- AFFILIATION -->
+                <!-- ================================================= -->
+
+                <page string="Affiliation" invisible="entity_type != 'affiliation'">
+
+                    <group>
+
+                        <group>
+                            <field name="affiliation_name" />
+                            <field name="registered_name" />
+                            <field name="cipc_number" />
+                            <field name="vat" />
+                            <field name="branch_number" />
+                        </group>
+
+                        <group>
+                            <field name="contact_person" />
+                            <field name="phone" />
+                            <field name="email" />
+                        </group>
+
+                        <group string="Head Office Information">
+                            <group>
+                                <field name="building" />
+                                <field name="unit" />
+                                <field name="street" />
+
+                                <field name="suburb" />
+                                <field name="city" />
+                                <field name="province" />
+                                <field name="zip" />
+                            </group>
+                        </group>
+
+                    </group>
+
+                </page>
+
+                <!-- ================================================= -->
+                <!-- CONTACT -->
+                <!-- ================================================= -->
+
+                <page string="Contact" invisible="entity_type != 'contact'">
+
+                    <group>
+
+                        <group>
+                            <field name="name" />
+                            <field name="job_description" />
+                            <field name="office_number" />
+                            <field name="office_contact_number" />
+                        </group>
+
+                        <group>
+                            <field name="phone" />
+                            <field name="email" />
+                        </group>
+
+                    </group>
+
+                </page>
+
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
